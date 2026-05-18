@@ -94,3 +94,71 @@ async def test_compare_member_alignment_returns_both_members(mock_two_members):
     assert "member_a" in data
     assert "member_b" in data
     assert "shared_policy_areas" in data
+
+
+from mcp_congress.compound import (
+    analyze_bill_support,
+    suggest_cosponsor_opportunities,
+    analyze_congress_priorities,
+)
+
+
+@pytest.fixture
+def mock_bill_fetches(monkeypatch):
+    monkeypatch.setattr(
+        "mcp_congress.compound._fetch_bill",
+        AsyncMock(return_value={"bill": {**SAMPLE_BILL, "committees": {"item": [{"systemCode": "hspw00"}]}}}),
+    )
+    monkeypatch.setattr(
+        "mcp_congress.compound._fetch_bill_cosponsors",
+        AsyncMock(return_value={"cosponsors": [{"bioguideId": "A000001", "fullName": "Rep. A", "party": "R", "state": "OH"}], "pagination": {"count": 1}}),
+    )
+    monkeypatch.setattr(
+        "mcp_congress.compound._fetch_member_sponsored_legislation",
+        AsyncMock(return_value={"sponsoredLegislation": [SAMPLE_BILL], "pagination": {"count": 1}}),
+    )
+    monkeypatch.setattr(
+        "mcp_congress.compound._fetch_member_cosponsored_legislation",
+        AsyncMock(return_value={"cosponsoredLegislation": [], "pagination": {"count": 0}}),
+    )
+
+
+async def test_analyze_bill_support_returns_support_data(mock_bill_fetches):
+    result = await analyze_bill_support(congress=119, bill_type="hr", bill_number="1")
+    data = json.loads(result)
+    assert "bill" in data
+    assert "cosponsors" in data
+    assert "cosponsor_count" in data
+
+
+async def test_suggest_cosponsor_opportunities_returns_ranked_list(mock_member_fetches, monkeypatch):
+    monkeypatch.setattr(
+        "mcp_congress.compound._search_bills_raw",
+        AsyncMock(return_value={"bills": [
+            {**SAMPLE_BILL, "number": "999", "title": "New Infrastructure Bill"},
+        ], "pagination": {"count": 1}}),
+    )
+    result = await suggest_cosponsor_opportunities(bioguide_id="J000295", congress=119)
+    data = json.loads(result)
+    assert "bioguide_id" in data
+    assert "suggestions" in data
+    assert isinstance(data["suggestions"], list)
+
+
+async def test_analyze_congress_priorities_tiers_by_advancement(monkeypatch):
+    bills = [
+        {**SAMPLE_BILL, "number": "1", "latestAction": {"text": "Became Public Law."}, "policyArea": {"name": "Transportation and Public Works"}},
+        {**SAMPLE_BILL, "number": "2", "latestAction": {"text": "Referred to committee."}, "policyArea": {"name": "Transportation and Public Works"}},
+        {**SAMPLE_BILL, "number": "3", "latestAction": {"text": "Passed House."}, "policyArea": {"name": "Economics and Public Finance"}},
+    ]
+    monkeypatch.setattr(
+        "mcp_congress.compound._search_bills_raw",
+        AsyncMock(return_value={"bills": bills, "pagination": {"count": 3}}),
+    )
+    result = await analyze_congress_priorities(congress=119)
+    data = json.loads(result)
+    assert "congress" in data
+    assert "policy_areas" in data
+    areas = {pa["area"]: pa for pa in data["policy_areas"]}
+    transport = areas["Transportation and Public Works"]
+    assert transport["enacted_count"] >= 1
