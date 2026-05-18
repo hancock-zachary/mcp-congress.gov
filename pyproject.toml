@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-congress-gov"
+version = "0.1.0"
+description = "MCP server providing Congress.gov data access for Claude"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "mcp[cli]>=1.9.0",
+    "httpx>=0.28.0",
+    "cachetools>=5.5.0",
+    "python-dotenv>=1.1.0",
+]
+
+[project.scripts]
+mcp-congress-gov = "mcp_congress.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_congress"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "respx>=0.21.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.hatch.envs.default]
+features = ["dev"]
