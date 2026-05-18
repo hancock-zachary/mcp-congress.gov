@@ -46,7 +46,15 @@ Built for teams that work with Congress.gov regularly and want Claude to answer 
 
 ## Installation
 
-### Step 1 — Install uv
+### Step 1 — Clone this repository
+
+```bash
+git clone https://github.com/hancock-zachary/mcp-congress.gov.git
+```
+
+Note the folder path where you cloned it — you'll need it in Step 4.
+
+### Step 2 — Install uv
 
 **macOS / Linux:**
 ```bash
@@ -60,11 +68,11 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 Restart your terminal after installing.
 
-### Step 2 — Get a Congress.gov API key
+### Step 3 — Get a Congress.gov API key
 
 Sign up at [api.congress.gov/sign-up](https://api.congress.gov/sign-up/). The key arrives by email within a few minutes.
 
-### Step 3 — Configure Claude Desktop
+### Step 4 — Configure Claude Desktop
 
 Open your Claude Desktop configuration file:
 
@@ -73,12 +81,13 @@ Open your Claude Desktop configuration file:
 
 Add the following inside the `"mcpServers"` object (create the object if it doesn't exist):
 
+**macOS / Linux:**
 ```json
 {
   "mcpServers": {
     "congress": {
       "command": "uvx",
-      "args": ["mcp-congress-gov"],
+      "args": ["--from", "/path/to/mcp-congress.gov", "mcp-congress-gov"],
       "env": {
         "CONGRESS_API_KEY": "your-api-key-here"
       }
@@ -87,9 +96,26 @@ Add the following inside the `"mcpServers"` object (create the object if it does
 }
 ```
 
-Replace `your-api-key-here` with the key from Step 2.
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "congress": {
+      "command": "uvx",
+      "args": ["--from", "C:\\Users\\yourname\\Documents\\GitHub\\mcp-congress.gov", "mcp-congress-gov"],
+      "env": {
+        "CONGRESS_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
 
-### Step 4 — Restart Claude Desktop
+Replace the path with the folder where you cloned the repo in Step 1, and replace `your-api-key-here` with the key from Step 3.
+
+> **Windows path tip:** In File Explorer, open the cloned folder and copy the path from the address bar. Then replace every `\` with `\\` in the config.
+
+### Step 5 — Restart Claude Desktop
 
 Quit and reopen Claude Desktop. The Congress.gov tools will appear automatically.
 
@@ -110,14 +136,30 @@ Once installed, ask Claude things like:
 
 ## Configuring for Claude Code or Claude Cowork
 
-Claude Code uses a `.mcp.json` file or the `--mcp-config` flag. Add the same `mcpServers` block to your project's `.mcp.json`:
+Claude Code uses a `.mcp.json` file or the `--mcp-config` flag. Add the same `mcpServers` block to your project's `.mcp.json`, using the same local path as above:
 
+**macOS / Linux:**
 ```json
 {
   "mcpServers": {
     "congress": {
       "command": "uvx",
-      "args": ["mcp-congress-gov"],
+      "args": ["--from", "/path/to/mcp-congress.gov", "mcp-congress-gov"],
+      "env": {
+        "CONGRESS_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "congress": {
+      "command": "uvx",
+      "args": ["--from", "C:\\Users\\yourname\\Documents\\GitHub\\mcp-congress.gov", "mcp-congress-gov"],
       "env": {
         "CONGRESS_API_KEY": "your-api-key-here"
       }
