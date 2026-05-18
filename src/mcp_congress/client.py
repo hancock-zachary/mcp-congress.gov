@@ -61,7 +61,11 @@ class CongressClient:
             if response.status_code == 404:
                 return {"error": "not_found", "message": f"Not found: {path}"}
 
-            response.raise_for_status()
+            if not response.is_success:
+                return {
+                    "error": "api_error",
+                    "message": f"Congress.gov API returned status {response.status_code}",
+                }
             data: dict[str, Any] = response.json()
 
             async with self._lock:

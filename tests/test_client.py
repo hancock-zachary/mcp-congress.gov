@@ -56,3 +56,13 @@ async def test_different_params_are_not_cached_together(client):
     await client.get("member", {"stateCode": "TX"})
     await client.get("member", {"stateCode": "CA"})
     assert respx.calls.call_count == 2
+
+
+@respx.mock
+async def test_get_5xx_returns_structured_error(client):
+    respx.get("https://api.congress.gov/v3/bill").mock(
+        return_value=httpx.Response(500)
+    )
+    result = await client.get("bill")
+    assert result["error"] == "api_error"
+    assert "message" in result
