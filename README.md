@@ -53,6 +53,7 @@ git clone https://github.com/hancock-zachary/mcp-congress.gov.git
 ```
 
 Note the folder path where you cloned it — you'll need it in Step 4.
+To make things easier in Step 4, clone the repository into a file path similar to "C:\Users\YOURNAME\Documents\GitHub\".
 
 ### Step 2 — Install uv
 
@@ -102,7 +103,7 @@ Add the following inside the `"mcpServers"` object (create the object if it does
   "mcpServers": {
     "Congress.gov MCP": {
       "command": "uvx",
-      "args": ["--from", "C:\\Users\\yourname\\Documents\\GitHub\\mcp-congress.gov", "mcp-congress-gov"],
+      "args": ["--from", "C:\\Users\\YOURNAME\\Documents\\GitHub\\mcp-congress.gov", "mcp-congress-gov"],
       "env": {
         "CONGRESS_API_KEY": "your-api-key-here"
       }
