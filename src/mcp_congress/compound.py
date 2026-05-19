@@ -13,11 +13,30 @@ async def _search_bills_raw(congress: int, params: dict[str, Any]) -> dict[str, 
     return await get_client().get(f"bill/{congress}", params)
 
 
+def _bills_for_member(bioguide_id: str, bill_data: dict) -> list[dict]:
+    """Return all cached bill records where the member is sponsor or cosponsor."""
+    return [
+        r for r in bill_data.get("bills", [])
+        if r.get("sponsor_id") == bioguide_id
+        or any(c.get("id") == bioguide_id for c in r.get("cosponsors", []))
+    ]
+
+
+def _policy_area_counts(bills: list[dict]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for b in bills:
+        area = b.get("policy_area", "")
+        if area:
+            counts[area] = counts.get(area, 0) + 1
+    return counts
+
+
 async def get_member_profile(bioguide_id: str, sponsored_limit: int = 20) -> str:
     """
     Build a comprehensive profile for a member of Congress.
     Combines bio, committee assignments, sponsorship history, and cosponsorship activity
     into a single response. Use this before analyzing a member's priorities or predicting votes.
+    Bio fields (chamber, district) are served from the member cache when available.
     """
     member_data, sponsored_data, cosponsored_data = await asyncio.gather(
         _fetch_member(bioguide_id),
@@ -26,6 +45,13 @@ async def get_member_profile(bioguide_id: str, sponsored_limit: int = 20) -> str
     )
 
     member = member_data.get("member", {})
+
+    # Overlay cached chamber/district — the live member endpoint often omits these
+    cached_member = cache.load_members().get("members", {}).get(bioguide_id, {})
+    for field in ("chamber", "district"):
+        if cached_member.get(field) is not None and not member.get(field):
+            member[field] = cached_member[field]
+
     sponsored = sponsored_data.get("sponsoredLegislation", [])
     cosponsored = cosponsored_data.get("cosponsoredLegislation", [])
 
@@ -50,13 +76,38 @@ async def get_member_stance(bioguide_id: str, topic: str) -> str:
     """
     Synthesize a member's position on a policy topic from their legislative activity.
     Searches sponsored and cosponsored bills for relevance to the topic keyword.
+    Checks the bill cache first; falls back to live API if the member has no cached bills.
     """
+    topic_lower = topic.lower()
+    bill_data = cache.load()
+    member_bills = _bills_for_member(bioguide_id, bill_data)
+
+    if member_bills:
+        sponsored_relevant = [
+            b for b in member_bills
+            if b.get("sponsor_id") == bioguide_id
+            and topic_lower in (b.get("policy_area") or "").lower()
+        ]
+        cosponsored_relevant = [
+            b for b in member_bills
+            if any(c.get("id") == bioguide_id for c in b.get("cosponsors", []))
+            and topic_lower in (b.get("policy_area") or "").lower()
+        ]
+        return json.dumps({
+            "bioguide_id": bioguide_id,
+            "topic": topic,
+            "sponsored_relevant": sponsored_relevant,
+            "cosponsored_relevant": cosponsored_relevant,
+            "activity_count": len(sponsored_relevant) + len(cosponsored_relevant),
+            "source": "cache",
+            "note": "Results from bill cache, filtered by policy area keyword. Bill titles not available in cache.",
+        })
+
+    # Fall back to live API
     sponsored_data, cosponsored_data = await asyncio.gather(
         _fetch_member_sponsored_legislation(bioguide_id, limit=50),
         _fetch_member_cosponsored_legislation(bioguide_id, limit=50),
     )
-
-    topic_lower = topic.lower()
 
     def is_relevant(bill: dict[str, Any]) -> bool:
         title = bill.get("title", "").lower()
@@ -72,6 +123,7 @@ async def get_member_stance(bioguide_id: str, topic: str) -> str:
         "sponsored_relevant": sponsored_relevant,
         "cosponsored_relevant": cosponsored_relevant,
         "activity_count": len(sponsored_relevant) + len(cosponsored_relevant),
+        "source": "live",
         "note": "Results filtered by topic keyword match in bill title or policy area.",
     })
 
@@ -81,22 +133,64 @@ async def compare_member_alignment(bioguide_id_a: str, bioguide_id_b: str) -> st
     Compare the legislative alignment of two members of Congress.
     Returns shared policy areas, overlap in cosponsored bills, and party/chamber context.
     Useful for coalition building and identifying potential allies or opponents.
+    Checks the bill cache first; falls back to live API for members without cached bills.
     """
-    (member_a_data, sponsored_a, cosponsored_a), (member_b_data, sponsored_b, cosponsored_b) = await asyncio.gather(
+    bill_data = cache.load()
+    bills_a = _bills_for_member(bioguide_id_a, bill_data)
+    bills_b = _bills_for_member(bioguide_id_b, bill_data)
+
+    if bills_a and bills_b:
+        members = cache.load_members().get("members", {})
+
+        def member_info(bid: str) -> dict:
+            m = members.get(bid, {})
+            return {"bioguideId": bid, "name": m.get("name", ""), "party": m.get("party", ""),
+                    "state": m.get("state", ""), "chamber": m.get("chamber", ""),
+                    "district": m.get("district")}
+
+        areas_a = {b["policy_area"] for b in bills_a if b.get("policy_area")}
+        areas_b = {b["policy_area"] for b in bills_b if b.get("policy_area")}
+
+        return json.dumps({
+            "member_a": member_info(bioguide_id_a),
+            "member_b": member_info(bioguide_id_b),
+            "shared_policy_areas": sorted(areas_a & areas_b),
+            "unique_to_a": sorted(areas_a - areas_b),
+            "unique_to_b": sorted(areas_b - areas_a),
+            "source": "cache",
+        })
+
+    # Fall back to live API for any member without cached bills
+    fetch_a = (
         asyncio.gather(
             _fetch_member(bioguide_id_a),
             _fetch_member_sponsored_legislation(bioguide_id_a, limit=50),
             _fetch_member_cosponsored_legislation(bioguide_id_a, limit=50),
-        ),
+        ) if not bills_a else asyncio.gather(
+            _fetch_member(bioguide_id_a),
+        )
+    )
+    fetch_b = (
         asyncio.gather(
             _fetch_member(bioguide_id_b),
             _fetch_member_sponsored_legislation(bioguide_id_b, limit=50),
             _fetch_member_cosponsored_legislation(bioguide_id_b, limit=50),
-        ),
+        ) if not bills_b else asyncio.gather(
+            _fetch_member(bioguide_id_b),
+        )
     )
 
-    def policy_areas(sponsored: dict, cosponsored: dict) -> set[str]:
-        areas = set()
+    results_a, results_b = await asyncio.gather(fetch_a, fetch_b)
+
+    member_a_data = results_a[0]
+    member_b_data = results_b[0]
+
+    def areas_from_live(results: list, bills_cache: list[dict]) -> set[str]:
+        if bills_cache:
+            return {b["policy_area"] for b in bills_cache if b.get("policy_area")}
+        sponsored = results[1] if len(results) > 1 else {}
+        cosponsored = results[2] if len(results) > 2 else {}
+        areas: set[str] = set()
         for bill in sponsored.get("sponsoredLegislation", []) + cosponsored.get("cosponsoredLegislation", []):
             area = bill.get("policyArea", {})
             if isinstance(area, dict):
@@ -105,8 +199,8 @@ async def compare_member_alignment(bioguide_id_a: str, bioguide_id_b: str) -> st
                 areas.add(str(area))
         return areas - {""}
 
-    areas_a = policy_areas(sponsored_a, cosponsored_a)
-    areas_b = policy_areas(sponsored_b, cosponsored_b)
+    areas_a = areas_from_live(results_a, bills_a)
+    areas_b = areas_from_live(results_b, bills_b)
 
     return json.dumps({
         "member_a": member_a_data.get("member", {}),
@@ -114,6 +208,7 @@ async def compare_member_alignment(bioguide_id_a: str, bioguide_id_b: str) -> st
         "shared_policy_areas": sorted(areas_a & areas_b),
         "unique_to_a": sorted(areas_a - areas_b),
         "unique_to_b": sorted(areas_b - areas_a),
+        "source": "mixed" if (bills_a or bills_b) else "live",
     })
 
 
@@ -194,7 +289,41 @@ async def suggest_cosponsor_opportunities(
     Suggest bills a member would be a strong fit to cosponsor.
     Finds active bills in the member's top policy areas that they have not yet cosponsored.
     Returns ranked suggestions with the matching policy area as reasoning.
+    Checks the bill cache first; falls back to live API if the member has no cached bills.
     """
+    bill_data = cache.load()
+    member_bills = _bills_for_member(bioguide_id, bill_data)
+
+    if member_bills:
+        already_involved = {
+            f"{b['congress']}{b['bill']}" for b in member_bills
+        }
+        top_areas = sorted(
+            _policy_area_counts(member_bills).items(), key=lambda x: x[1], reverse=True
+        )[:3]
+        top_area_names = {a for a, _ in top_areas}
+
+        candidate_bills: list[dict[str, Any]] = [
+            {**b, "_matched_area": b.get("policy_area", "")}
+            for b in bill_data.get("bills", [])
+            if f"{b.get('congress')}{b.get('bill')}" not in already_involved
+            and b.get("policy_area") in top_area_names
+            and b.get("congress") == congress
+        ]
+        candidate_bills.sort(
+            key=lambda b: _advancement_weight(""),
+            reverse=True,
+        )
+
+        return json.dumps({
+            "bioguide_id": bioguide_id,
+            "congress": congress,
+            "member_top_areas": [a for a, _ in top_areas],
+            "suggestions": candidate_bills[:limit],
+            "source": "cache",
+        })
+
+    # Fall back to live API
     sponsored_data, cosponsored_data = await asyncio.gather(
         _fetch_member_sponsored_legislation(bioguide_id, limit=50),
         _fetch_member_cosponsored_legislation(bioguide_id, limit=50),
@@ -217,7 +346,7 @@ async def suggest_cosponsor_opportunities(
 
     top_areas = sorted(policy_counts.items(), key=lambda x: x[1], reverse=True)[:3]
 
-    candidate_bills: list[dict[str, Any]] = []
+    candidate_bills = []
     for area_name, _ in top_areas:
         result = await _search_bills_raw(congress, {
             "query": area_name,
@@ -239,6 +368,7 @@ async def suggest_cosponsor_opportunities(
         "congress": congress,
         "member_top_areas": [a for a, _ in top_areas],
         "suggestions": candidate_bills[:limit],
+        "source": "live",
     })
 
 
