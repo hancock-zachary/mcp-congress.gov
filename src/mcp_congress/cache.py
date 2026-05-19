@@ -8,7 +8,7 @@ from typing import Any, TYPE_CHECKING
 if TYPE_CHECKING:
     from .client import CongressClient
 
-_CACHE_FILE = files("mcp_congress.data").joinpath("policy_areas.json")
+_CACHE_FILE = files("mcp_congress.data").joinpath("bill_cache.json")
 _STALE_AFTER_HOURS = 24
 _REFRESH_BATCH = 500
 

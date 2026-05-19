@@ -1,15 +1,15 @@
 """
-Seed the policy-area cache with a full population of bill→policyArea mappings.
+Seed the bill cache with a full population of bill data: policy area, sponsor, and cosponsors.
 
 Run this once (or whenever you want a fresh full seed) to pre-populate
-src/mcp_congress/data/policy_areas.json before committing to the repo.
+src/mcp_congress/data/bill_cache.json before committing to the repo.
 Teammates who pull the repo get the benefit of these lookups without needing
 to make any API calls themselves.
 
 Usage:
-    uv run python src/mcp_congress/seed/seed_policy_areas.py
-    uv run python src/mcp_congress/seed/seed_policy_areas.py --congresses 118 119
-    uv run python src/mcp_congress/seed/seed_policy_areas.py --congresses 119 --batch 250
+    uv run python src/mcp_congress/seed/seed_bills.py
+    uv run python src/mcp_congress/seed/seed_bills.py --congresses 118 119
+    uv run python src/mcp_congress/seed/seed_bills.py --congresses 119 --batch 250
 """
 
 import argparse
@@ -170,7 +170,7 @@ async def main(congresses: list[int], batch_size: int) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Seed the policy-area cache from Congress.gov.")
+    parser = argparse.ArgumentParser(description="Seed the bill cache (policy area, sponsor, cosponsors) from Congress.gov.")
     parser.add_argument(
         "--congresses",
         nargs="+",
