@@ -32,7 +32,10 @@ from mcp_congress.cache import bill_key
 
 PAGE_SIZE = 250
 CONCURRENT_PAGES = 5   # pages fetched in parallel at a time
-DEFAULT_BATCH = 20     # detail calls fired in parallel at a time
+DEFAULT_BATCH = 10     # detail calls fired in parallel at a time
+SAVE_EVERY = 200       # persist to disk after this many new records
+BASE_PAUSE = 1.0       # seconds between batches under normal conditions
+BACKOFF_PAUSE = 15.0   # seconds to pause when timeouts are detected
 
 
 async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
@@ -62,9 +65,11 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
 
 async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: int) -> list[dict]:
     entries: list[dict] = []
+    unsaved: list[dict] = []
     total = len(bills)
     timeouts = 0
     no_area = 0
+    pause = BASE_PAUSE
 
     for i in range(0, total, batch_size):
         chunk = bills[i:i + batch_size]
@@ -73,21 +78,27 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
             for b in chunk
         ], return_exceptions=True)
 
+        batch_timeouts = 0
         for result in results:
-            if isinstance(result, Exception):
+            if isinstance(result, Exception) or (isinstance(result, dict) and "error" in result):
                 timeouts += 1
-                continue
-            if "error" in result:
-                timeouts += 1
+                batch_timeouts += 1
                 continue
             b = result.get("bill", {})
             congress = b.get("congress", "")
             bill = f"{b.get('type', '').lower()}{b.get('number', '')}"
             area = b.get("policyArea", {})
             if isinstance(area, dict) and area.get("name") and congress and bill:
-                entries.append({"congress": congress, "bill": bill, "policy_area": area["name"]})
+                entry = {"congress": congress, "bill": bill, "policy_area": area["name"]}
+                entries.append(entry)
+                unsaved.append(entry)
             else:
                 no_area += 1
+
+        # Persist incrementally so a crash or rate-limit wave doesn't lose progress
+        if len(unsaved) >= SAVE_EVERY:
+            cache.update_many(unsaved)
+            unsaved.clear()
 
         done = min(i + batch_size, total)
         parts = [f"{len(entries)} mapped", f"{no_area} no CRS area"]
@@ -95,8 +106,18 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
             parts.append(f"{timeouts} timeouts")
         print(f"  Enriched {done}/{total} bills ({', '.join(parts)})")
 
-        # Brief pause between batches to avoid sustained API pressure
-        await asyncio.sleep(0.5)
+        # Adaptive backoff: slow down when the API starts refusing requests
+        if batch_timeouts == len(chunk):
+            pause = BACKOFF_PAUSE
+            print(f"  Rate limit detected — pausing {int(pause)}s")
+        elif batch_timeouts == 0:
+            pause = BASE_PAUSE
+
+        await asyncio.sleep(pause)
+
+    # Flush any remaining unsaved entries
+    if unsaved:
+        cache.update_many(unsaved)
 
     return entries
 
@@ -129,12 +150,11 @@ async def main(congresses: list[int], batch_size: int) -> None:
             new = await enrich_batch(to_enrich, client, batch_size)
             all_new.extend(new)
 
+    data = cache.load()
+    data["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    cache.save(data)
     if all_new:
-        cache.update_many(all_new)
-        data = cache.load()
-        data["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        cache.save(data)
-        print(f"\nSaved {len(all_new)} new policy-area records to cache.")
+        print(f"\nAdded {len(all_new)} new policy-area records (saved incrementally).")
         print(f"Total cache size: {len(data['bills'])} entries.")
     else:
         print("\nNo new records to add — cache is already up to date.")
