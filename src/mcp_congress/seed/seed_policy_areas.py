@@ -28,6 +28,7 @@ load_dotenv()
 from mcp_congress.client import CongressClient
 from mcp_congress.bills import _fetch_bill
 from mcp_congress import cache
+from mcp_congress.cache import bill_key
 
 PAGE_SIZE = 250
 CONCURRENT_PAGES = 5   # pages fetched in parallel at a time
@@ -75,11 +76,11 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
             if isinstance(result, Exception):
                 errors += 1
                 continue
-            bill = result.get("bill", {})
-            key = f"{bill.get('type', '')}{bill.get('number', '')}"
-            area = bill.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name") and key:
-                mappings[key] = area["name"]
+            b = result.get("bill", {})
+            k = bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", ""))
+            area = b.get("policyArea", {})
+            if isinstance(area, dict) and area.get("name") and k:
+                mappings[k] = area["name"]
 
         done = min(i + batch_size, total)
         error_note = f", {errors} timeouts skipped" if errors else ""
@@ -108,7 +109,7 @@ async def main(congresses: list[int], batch_size: int) -> None:
 
         to_enrich = [
             b for b in bills
-            if f"{b.get('type', '')}{b.get('number', '')}" not in existing
+            if bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", "")) not in existing
             and b.get("congress") and b.get("type") and b.get("number")
         ]
         print(f"  {len(to_enrich)} bills need enrichment (not yet in cache)")

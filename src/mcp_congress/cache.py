@@ -13,6 +13,10 @@ _STALE_AFTER_HOURS = 24
 _REFRESH_BATCH = 500
 
 
+def bill_key(congress: int | str, bill_type: str, number: str) -> str:
+    return f"{congress}{bill_type.lower()}{number}"
+
+
 def _now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
@@ -91,7 +95,7 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
     existing = data["bills"]
     to_enrich = [
         b for b in updated_bills
-        if f"{b.get('type', '')}{b.get('number', '')}" not in existing
+        if bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", "")) not in existing
         and b.get("congress") and b.get("type") and b.get("number")
     ][:_REFRESH_BATCH]
 
@@ -103,11 +107,11 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
             for b in to_enrich
         ])
         for detail in details:
-            bill = detail.get("bill", {})
-            key = f"{bill.get('type', '')}{bill.get('number', '')}"
-            area = bill.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name") and key:
-                new_mappings[key] = area["name"]
+            b = detail.get("bill", {})
+            k = bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", ""))
+            area = b.get("policyArea", {})
+            if isinstance(area, dict) and area.get("name") and k:
+                new_mappings[k] = area["name"]
 
     data["bills"].update(new_mappings)
     data["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")

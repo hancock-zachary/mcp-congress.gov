@@ -67,4 +67,4 @@ async def test_refresh_fetches_and_persists(monkeypatch):
         count = await cache_mod.refresh(mock_client, congresses=[119])
 
     assert count == 1
-    assert saved["bills"].get("hr5") == "Economics and Public Finance"
+    assert saved["bills"].get("119hr5") == "Economics and Public Finance"

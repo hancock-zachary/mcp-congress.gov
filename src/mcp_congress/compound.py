@@ -6,6 +6,7 @@ from .members import _fetch_member, _fetch_member_sponsored_legislation, _fetch_
 from .bills import _fetch_bill, _fetch_bill_cosponsors
 from .client import get_client
 from . import cache
+from .cache import bill_key
 
 
 async def _search_bills_raw(congress: int, params: dict[str, Any]) -> dict[str, Any]:
@@ -185,7 +186,8 @@ async def suggest_cosponsor_opportunities(
     cosponsored = cosponsored_data.get("cosponsoredLegislation", [])
 
     already_involved = {
-        f"{b.get('type', '')}{b.get('number', '')}" for b in sponsored + cosponsored
+        bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", ""))
+        for b in sponsored + cosponsored
     }
 
     policy_counts: dict[str, int] = {}
@@ -205,7 +207,7 @@ async def suggest_cosponsor_opportunities(
             "offset": 0,
         })
         for bill in result.get("bills", []):
-            key = f"{bill.get('type', '')}{bill.get('number', '')}"
+            key = bill_key(bill.get("congress", congress), bill.get("type", ""), bill.get("number", ""))
             if key not in already_involved:
                 candidate_bills.append({**bill, "_matched_area": area_name})
 
@@ -262,9 +264,9 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
     cached_data = cache.load()["bills"]
     for bill in all_bills:
         if not bill.get("policyArea"):
-            key = f"{bill.get('type', '')}{bill.get('number', '')}"
-            if key in cached_data:
-                bill["policyArea"] = {"name": cached_data[key]}
+            k = bill_key(bill.get("congress", congress), bill.get("type", ""), bill.get("number", ""))
+            if k in cached_data:
+                bill["policyArea"] = {"name": cached_data[k]}
 
     # For bills still missing policyArea, enrich via detail calls.
     # Sort by advancement weight so the most impactful bills get classified first.
@@ -281,11 +283,11 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
         ])
         new_cache_entries: dict[str, str] = {}
         for detail in detail_results:
-            bill_detail = detail.get("bill", {})
-            key = f"{bill_detail.get('type', '')}{bill_detail.get('number', '')}"
-            area = bill_detail.get("policyArea", {})
+            bd = detail.get("bill", {})
+            k = bill_key(bd.get("congress", congress), bd.get("type", ""), bd.get("number", ""))
+            area = bd.get("policyArea", {})
             if isinstance(area, dict) and area.get("name"):
-                new_cache_entries[key] = area["name"]
+                new_cache_entries[k] = area["name"]
 
         # Persist newly discovered policy areas
         if new_cache_entries:
@@ -293,9 +295,9 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
 
         for bill in all_bills:
             if not bill.get("policyArea"):
-                key = f"{bill.get('type', '')}{bill.get('number', '')}"
-                if key in new_cache_entries:
-                    bill["policyArea"] = {"name": new_cache_entries[key]}
+                k = bill_key(bill.get("congress", congress), bill.get("type", ""), bill.get("number", ""))
+                if k in new_cache_entries:
+                    bill["policyArea"] = {"name": new_cache_entries[k]}
 
     area_stats: dict[str, dict[str, Any]] = {}
     for bill in all_bills:
