@@ -25,7 +25,7 @@ def load() -> dict[str, Any]:
     try:
         return json.loads(_CACHE_FILE.read_text(encoding="utf-8"))
     except Exception:
-        return {"last_updated": "2025-01-01T00:00:00Z", "bills": {}}
+        return {"last_updated": "2025-01-01T00:00:00Z", "bills": []}
 
 
 def save(data: dict[str, Any]) -> None:
@@ -37,13 +37,23 @@ def save(data: dict[str, Any]) -> None:
         pass  # read-only install path — silently skip
 
 
-def get_policy_area(bill_key: str) -> str | None:
-    return load()["bills"].get(bill_key)
+def build_index(data: dict[str, Any]) -> dict[str, str]:
+    """Return a fast lookup dict keyed by bill_key() from the stored bill list."""
+    return {
+        f"{r['congress']}{r['bill']}": r["policy_area"]
+        for r in data.get("bills", [])
+    }
 
 
-def update_many(mappings: dict[str, str]) -> None:
+def update_many(entries: list[dict[str, Any]]) -> None:
+    """Append new {congress, bill, policy_area} records, skipping duplicates."""
     data = load()
-    data["bills"].update(mappings)
+    existing = {f"{r['congress']}{r['bill']}" for r in data["bills"]}
+    for entry in entries:
+        k = f"{entry['congress']}{entry['bill']}"
+        if k not in existing:
+            data["bills"].append(entry)
+            existing.add(k)
     save(data)
 
 
@@ -60,9 +70,10 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
     """
     Fetch bills updated since last_updated across the given congresses,
     enrich with policy areas from detail calls, and persist to cache.
-    Returns the number of new bill→area mappings added.
+    Returns the number of new records added.
     """
     data = load()
+    existing = build_index(data)
     try:
         from_dt = datetime.fromisoformat(
             data["last_updated"].replace("Z", "+00:00")
@@ -92,14 +103,13 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
                 updated_bills.extend(page.get("bills", []))
 
     # Only enrich bills not already in cache
-    existing = data["bills"]
     to_enrich = [
         b for b in updated_bills
         if bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", "")) not in existing
         and b.get("congress") and b.get("type") and b.get("number")
     ][:_REFRESH_BATCH]
 
-    new_mappings: dict[str, str] = {}
+    new_entries: list[dict[str, Any]] = []
     if to_enrich:
         from .bills import _fetch_bill
         details = await asyncio.gather(*[
@@ -108,13 +118,25 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
         ])
         for detail in details:
             b = detail.get("bill", {})
-            k = bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", ""))
+            congress = b.get("congress", "")
+            bill = f"{b.get('type', '').lower()}{b.get('number', '')}"
             area = b.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name") and k:
-                new_mappings[k] = area["name"]
+            if isinstance(area, dict) and area.get("name") and congress and bill:
+                new_entries.append({
+                    "congress": congress,
+                    "bill": bill,
+                    "policy_area": area["name"],
+                })
 
-    data["bills"].update(new_mappings)
-    data["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
-    save(data)
+    # Reload so we merge with any changes made since we started
+    fresh = load()
+    existing_keys = {f"{r['congress']}{r['bill']}" for r in fresh["bills"]}
+    for entry in new_entries:
+        k = f"{entry['congress']}{entry['bill']}"
+        if k not in existing_keys:
+            fresh["bills"].append(entry)
+            existing_keys.add(k)
+    fresh["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
+    save(fresh)
 
-    return len(new_mappings)
+    return len(new_entries)

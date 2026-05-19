@@ -60,8 +60,8 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
     return bills
 
 
-async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: int) -> dict[str, str]:
-    mappings: dict[str, str] = {}
+async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: int) -> list[dict]:
+    entries: list[dict] = []
     total = len(bills)
     errors = 0
 
@@ -77,16 +77,17 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
                 errors += 1
                 continue
             b = result.get("bill", {})
-            k = bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", ""))
+            congress = b.get("congress", "")
+            bill = f"{b.get('type', '').lower()}{b.get('number', '')}"
             area = b.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name") and k:
-                mappings[k] = area["name"]
+            if isinstance(area, dict) and area.get("name") and congress and bill:
+                entries.append({"congress": congress, "bill": bill, "policy_area": area["name"]})
 
         done = min(i + batch_size, total)
         error_note = f", {errors} timeouts skipped" if errors else ""
-        print(f"  Enriched {done}/{total} bills ({len(mappings)} mapped{error_note})")
+        print(f"  Enriched {done}/{total} bills ({len(entries)} mapped{error_note})")
 
-    return mappings
+    return entries
 
 
 async def main(congresses: list[int], batch_size: int) -> None:
@@ -97,16 +98,15 @@ async def main(congresses: list[int], batch_size: int) -> None:
         sys.exit(1)
 
     client = CongressClient(api_key=api_key, timeout=60.0)
-    data = cache.load()
-    existing = data["bills"]
-    print(f"Existing cache entries: {len(existing)}")
+    print(f"Existing cache entries: {len(cache.load()['bills'])}")
 
-    all_new: dict[str, str] = {}
+    all_new: list[dict] = []
 
     for congress in congresses:
         print(f"\nFetching bills for the {congress}th Congress...")
         bills = await fetch_all_bills(client, congress)
 
+        existing = cache.build_index(cache.load())
         to_enrich = [
             b for b in bills
             if bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", "")) not in existing
@@ -116,16 +116,17 @@ async def main(congresses: list[int], batch_size: int) -> None:
 
         if to_enrich:
             new = await enrich_batch(to_enrich, client, batch_size)
-            all_new.update(new)
+            all_new.extend(new)
 
     if all_new:
-        data["bills"].update(all_new)
+        cache.update_many(all_new)
+        data = cache.load()
         data["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         cache.save(data)
-        print(f"\nSaved {len(all_new)} new policy-area mappings to cache.")
+        print(f"\nSaved {len(all_new)} new policy-area records to cache.")
         print(f"Total cache size: {len(data['bills'])} entries.")
     else:
-        print("\nNo new mappings to add — cache is already up to date.")
+        print("\nNo new records to add — cache is already up to date.")
 
     await client._http.aclose()
 

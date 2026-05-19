@@ -261,12 +261,12 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
             all_bills.extend(page.get("bills", []))
 
     # Apply policy areas from persistent cache before falling back to API calls
-    cached_data = cache.load()["bills"]
+    cached_index = cache.build_index(cache.load())
     for bill in all_bills:
         if not bill.get("policyArea"):
             k = bill_key(bill.get("congress", congress), bill.get("type", ""), bill.get("number", ""))
-            if k in cached_data:
-                bill["policyArea"] = {"name": cached_data[k]}
+            if k in cached_index:
+                bill["policyArea"] = {"name": cached_index[k]}
 
     # For bills still missing policyArea, enrich via detail calls.
     # Sort by advancement weight so the most impactful bills get classified first.
@@ -281,23 +281,27 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
             _fetch_bill(b["congress"], b["type"], b["number"])
             for b in sample
         ])
-        new_cache_entries: dict[str, str] = {}
+        new_entries: list[dict] = []
+        new_index: dict[str, str] = {}
         for detail in detail_results:
             bd = detail.get("bill", {})
-            k = bill_key(bd.get("congress", congress), bd.get("type", ""), bd.get("number", ""))
+            c = bd.get("congress", congress)
+            t = bd.get("type", "").lower()
+            n = bd.get("number", "")
             area = bd.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name"):
-                new_cache_entries[k] = area["name"]
+            if isinstance(area, dict) and area.get("name") and t and n:
+                k = bill_key(c, t, n)
+                new_entries.append({"congress": c, "bill": f"{t}{n}", "policy_area": area["name"]})
+                new_index[k] = area["name"]
 
-        # Persist newly discovered policy areas
-        if new_cache_entries:
-            cache.update_many(new_cache_entries)
+        if new_entries:
+            cache.update_many(new_entries)
 
         for bill in all_bills:
             if not bill.get("policyArea"):
                 k = bill_key(bill.get("congress", congress), bill.get("type", ""), bill.get("number", ""))
-                if k in new_cache_entries:
-                    bill["policyArea"] = {"name": new_cache_entries[k]}
+                if k in new_index:
+                    bill["policyArea"] = {"name": new_index[k]}
 
     area_stats: dict[str, dict[str, Any]] = {}
     for bill in all_bills:
