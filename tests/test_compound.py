@@ -151,14 +151,24 @@ async def test_analyze_congress_priorities_tiers_by_advancement(monkeypatch):
         {**SAMPLE_BILL, "number": "2", "latestAction": {"text": "Referred to committee."}, "policyArea": {"name": "Transportation and Public Works"}},
         {**SAMPLE_BILL, "number": "3", "latestAction": {"text": "Passed House."}, "policyArea": {"name": "Economics and Public Finance"}},
     ]
+    # All bills have policyArea so no detail fetches are triggered; count == len(bills) so no extra pages.
     monkeypatch.setattr(
         "mcp_congress.compound._search_bills_raw",
         AsyncMock(return_value={"bills": bills, "pagination": {"count": 3}}),
     )
+    monkeypatch.setattr(
+        "mcp_congress.compound._fetch_bill",
+        AsyncMock(return_value={"bill": {}}),
+    )
     result = await analyze_congress_priorities(congress=119)
     data = json.loads(result)
-    assert "congress" in data
+    assert data["congress"] == 119
     assert "policy_areas" in data
+    assert "bills_analyzed" in data
+    assert "total_available" in data
+    assert "uncategorized_bills" in data
     areas = {pa["area"]: pa for pa in data["policy_areas"]}
     transport = areas["Transportation and Public Works"]
     assert transport["enacted_count"] >= 1
+    finance = areas["Economics and Public Finance"]
+    assert finance["floor_vote_count"] >= 1

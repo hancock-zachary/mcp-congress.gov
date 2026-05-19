@@ -85,7 +85,7 @@ Add the following inside the `"mcpServers"` object (create the object if it does
 ```json
 {
   "mcpServers": {
-    "congress": {
+    "Congress.gov MCP": {
       "command": "uvx",
       "args": ["--from", "/path/to/mcp-congress.gov", "mcp-congress-gov"],
       "env": {
@@ -100,7 +100,7 @@ Add the following inside the `"mcpServers"` object (create the object if it does
 ```json
 {
   "mcpServers": {
-    "congress": {
+    "Congress.gov MCP": {
       "command": "uvx",
       "args": ["--from", "C:\\Users\\yourname\\Documents\\GitHub\\mcp-congress.gov", "mcp-congress-gov"],
       "env": {

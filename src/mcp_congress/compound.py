@@ -223,19 +223,62 @@ async def suggest_cosponsor_opportunities(
 
 
 async def analyze_congress_priorities(
-    congress: int = 119, limit_per_fetch: int = 250
+    congress: int = 119, max_bills: int = 1000
 ) -> str:
     """
     Identify the legislative priorities of a congress by analyzing bill advancement.
     Bills are grouped by policy area and weighted by how far they advanced
     (enacted > floor vote > committee passage > introduced).
+    Fetches up to 1,000 bills using concurrent pagination, then enriches a sample
+    with full bill details to resolve policy area classifications.
     Returns a ranked list of policy areas reflecting real legislative momentum.
     """
-    result = await _search_bills_raw({"congress": congress, "limit": limit_per_fetch, "offset": 0})
-    bills = result.get("bills", [])
+    page_size = 250
+
+    # Fetch first page to get total count
+    first_page = await _search_bills_raw({"congress": congress, "limit": page_size, "offset": 0, "sort": "updateDate+desc"})
+    if "error" in first_page:
+        return json.dumps(first_page)
+
+    total_available = first_page.get("pagination", {}).get("count", 0)
+    all_bills: list[dict[str, Any]] = list(first_page.get("bills", []))
+
+    # Fetch remaining pages concurrently up to max_bills
+    remaining = min(max_bills, total_available) - len(all_bills)
+    if remaining > 0:
+        offsets = range(page_size, min(max_bills, total_available), page_size)
+        extra_pages = await asyncio.gather(*[
+            _search_bills_raw({"congress": congress, "limit": page_size, "offset": offset, "sort": "updateDate+desc"})
+            for offset in offsets
+        ])
+        for page in extra_pages:
+            all_bills.extend(page.get("bills", []))
+
+    # The bill list endpoint omits policyArea — fetch details for a sample to resolve it.
+    # Prioritise bills that have advanced furthest (most useful for priority analysis).
+    bills_needing_area = [b for b in all_bills if not b.get("policyArea")]
+    sample = bills_needing_area[:100]
+    if sample:
+        detail_results = await asyncio.gather(*[
+            _fetch_bill(b["congress"], b["type"], b["number"])
+            for b in sample
+        ])
+        area_lookup: dict[str, str] = {}
+        for detail in detail_results:
+            bill_detail = detail.get("bill", {})
+            key = f"{bill_detail.get('type', '')}{bill_detail.get('number', '')}"
+            area = bill_detail.get("policyArea", {})
+            if isinstance(area, dict) and area.get("name"):
+                area_lookup[key] = area["name"]
+
+        for bill in all_bills:
+            if not bill.get("policyArea"):
+                key = f"{bill.get('type', '')}{bill.get('number', '')}"
+                if key in area_lookup:
+                    bill["policyArea"] = {"name": area_lookup[key]}
 
     area_stats: dict[str, dict[str, Any]] = {}
-    for bill in bills:
+    for bill in all_bills:
         area = bill.get("policyArea", {})
         area_name = area.get("name", "Uncategorized") if isinstance(area, dict) else str(area or "Uncategorized")
 
@@ -266,11 +309,15 @@ async def analyze_congress_priorities(
         else:
             stats["introduced_only_count"] += 1
 
+    # Exclude the catch-all bucket from ranked results — surface it separately
+    uncategorized = area_stats.pop("Uncategorized", None)
     ranked = sorted(area_stats.values(), key=lambda s: s["total_weight"], reverse=True)
 
     return json.dumps({
         "congress": congress,
-        "bills_analyzed": len(bills),
+        "bills_analyzed": len(all_bills),
+        "total_available": total_available,
         "policy_areas": ranked,
-        "note": "Areas ranked by total advancement weight. Enacted bills weighted 6x vs introduced-only (1x).",
+        "uncategorized_bills": uncategorized["total_bills"] if uncategorized else 0,
+        "note": "Areas ranked by total advancement weight. Enacted bills weighted 6x vs introduced-only (1x). Bills without CRS policy area classifications are excluded from ranking.",
     })
