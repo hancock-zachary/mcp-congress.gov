@@ -95,9 +95,9 @@ def save_members(data: dict[str, Any]) -> None:
 
 
 def update_members(members: dict[str, Any]) -> None:
-    """Upsert {bioguide_id: {name, party, state, district, active}} records.
+    """Upsert {bioguide_id: {name, party, state, chamber, district}} records.
     Existing member records are merged field-by-field so that richer data
-    (e.g. district/active from seed_members) is not overwritten by the
+    (e.g. chamber/district from seed_members) is not overwritten by the
     sparser records collected during bill enrichment.
     """
     data = load_members()

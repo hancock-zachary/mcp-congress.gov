@@ -55,19 +55,29 @@ async def fetch_all_members(client: CongressClient, congress: int | None) -> lis
     return members
 
 
+_CHAMBER_MAP = {
+    "house of representatives": "House",
+    "senate": "Senate",
+}
+
+
 def _normalize(raw: dict) -> tuple[str, dict] | None:
-    """Extract bioguide ID and normalized member record from a raw API member object."""
+    """Extract bioguide ID and normalized member record from a raw API member object.
+    Returns None for inactive members (currentMember != True).
+    """
+    if not raw.get("currentMember"):
+        return None
     bid = raw.get("bioguideId", "")
     if not bid:
         return None
-    # district is only present for House members; None for senators
     district = raw.get("district")
+    chamber_raw = (raw.get("chamber") or "").lower()
     return bid, {
         "name": raw.get("directOrderName") or raw.get("invertedOrderName") or raw.get("name", ""),
         "party": raw.get("partyName", ""),
         "state": raw.get("state", ""),
+        "chamber": _CHAMBER_MAP.get(chamber_raw, raw.get("chamber", "")),
         "district": int(district) if district is not None else None,
-        "active": bool(raw.get("currentMember", False)),
     }
 
 
