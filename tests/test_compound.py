@@ -160,6 +160,11 @@ async def test_analyze_congress_priorities_tiers_by_advancement(monkeypatch):
         "mcp_congress.compound._fetch_bill",
         AsyncMock(return_value={"bill": {}}),
     )
+    # Cache is fresh — skip refresh; return empty bills dict so cache lookup is a no-op
+    monkeypatch.setattr("mcp_congress.compound.cache.is_stale", lambda: False)
+    monkeypatch.setattr("mcp_congress.compound.cache.load", lambda: {"last_updated": "2026-01-01T00:00:00Z", "bills": {}})
+    monkeypatch.setattr("mcp_congress.compound.cache.update_many", lambda _: None)
+
     result = await analyze_congress_priorities(congress=119)
     data = json.loads(result)
     assert data["congress"] == 119

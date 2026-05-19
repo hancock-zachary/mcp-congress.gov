@@ -5,6 +5,7 @@ from typing import Any
 from .members import _fetch_member, _fetch_member_sponsored_legislation, _fetch_member_cosponsored_legislation
 from .bills import _fetch_bill, _fetch_bill_cosponsors
 from .client import get_client
+from . import cache
 
 
 async def _search_bills_raw(params: dict[str, Any]) -> dict[str, Any]:
@@ -222,17 +223,22 @@ async def suggest_cosponsor_opportunities(
     })
 
 
-async def analyze_congress_priorities(
-    congress: int = 119, max_bills: int = 1000
-) -> str:
+async def analyze_congress_priorities(congress: int = 119) -> str:
     """
     Identify the legislative priorities of a congress by analyzing bill advancement.
     Bills are grouped by policy area and weighted by how far they advanced
     (enacted > floor vote > committee passage > introduced).
-    Fetches up to 1,000 bills using concurrent pagination, then enriches a sample
-    with full bill details to resolve policy area classifications.
+    Fetches all bills via concurrent pagination, resolves policy areas from a
+    persistent local cache (refreshed daily), and falls back to live API detail
+    calls for any bills still missing a classification.
     Returns a ranked list of policy areas reflecting real legislative momentum.
     """
+    client = get_client()
+
+    # Refresh the persistent policy-area cache if it's more than 24 hours old
+    if cache.is_stale():
+        await cache.refresh(client, congresses=[congress])
+
     page_size = 250
 
     # Fetch first page to get total count
@@ -243,10 +249,9 @@ async def analyze_congress_priorities(
     total_available = first_page.get("pagination", {}).get("count", 0)
     all_bills: list[dict[str, Any]] = list(first_page.get("bills", []))
 
-    # Fetch remaining pages concurrently up to max_bills
-    remaining = min(max_bills, total_available) - len(all_bills)
-    if remaining > 0:
-        offsets = range(page_size, min(max_bills, total_available), page_size)
+    # Fetch all remaining pages concurrently
+    if total_available > page_size:
+        offsets = range(page_size, total_available, page_size)
         extra_pages = await asyncio.gather(*[
             _search_bills_raw({"congress": congress, "limit": page_size, "offset": offset, "sort": "updateDate+desc"})
             for offset in offsets
@@ -254,28 +259,44 @@ async def analyze_congress_priorities(
         for page in extra_pages:
             all_bills.extend(page.get("bills", []))
 
-    # The bill list endpoint omits policyArea — fetch details for a sample to resolve it.
-    # Prioritise bills that have advanced furthest (most useful for priority analysis).
+    # Apply policy areas from persistent cache before falling back to API calls
+    cached_data = cache.load()["bills"]
+    for bill in all_bills:
+        if not bill.get("policyArea"):
+            key = f"{bill.get('type', '')}{bill.get('number', '')}"
+            if key in cached_data:
+                bill["policyArea"] = {"name": cached_data[key]}
+
+    # For bills still missing policyArea, enrich via detail calls.
+    # Sort by advancement weight so the most impactful bills get classified first.
     bills_needing_area = [b for b in all_bills if not b.get("policyArea")]
-    sample = bills_needing_area[:100]
+    bills_needing_area.sort(
+        key=lambda b: _advancement_weight(b.get("latestAction", {}).get("text", "")),
+        reverse=True,
+    )
+    sample = bills_needing_area[:500]
     if sample:
         detail_results = await asyncio.gather(*[
             _fetch_bill(b["congress"], b["type"], b["number"])
             for b in sample
         ])
-        area_lookup: dict[str, str] = {}
+        new_cache_entries: dict[str, str] = {}
         for detail in detail_results:
             bill_detail = detail.get("bill", {})
             key = f"{bill_detail.get('type', '')}{bill_detail.get('number', '')}"
             area = bill_detail.get("policyArea", {})
             if isinstance(area, dict) and area.get("name"):
-                area_lookup[key] = area["name"]
+                new_cache_entries[key] = area["name"]
+
+        # Persist newly discovered policy areas
+        if new_cache_entries:
+            cache.update_many(new_cache_entries)
 
         for bill in all_bills:
             if not bill.get("policyArea"):
                 key = f"{bill.get('type', '')}{bill.get('number', '')}"
-                if key in area_lookup:
-                    bill["policyArea"] = {"name": area_lookup[key]}
+                if key in new_cache_entries:
+                    bill["policyArea"] = {"name": new_cache_entries[key]}
 
     area_stats: dict[str, dict[str, Any]] = {}
     for bill in all_bills:
