@@ -8,8 +8,8 @@ from .client import get_client
 from . import cache
 
 
-async def _search_bills_raw(params: dict[str, Any]) -> dict[str, Any]:
-    return await get_client().get("bill", params)
+async def _search_bills_raw(congress: int, params: dict[str, Any]) -> dict[str, Any]:
+    return await get_client().get(f"bill/{congress}", params)
 
 
 async def get_member_profile(bioguide_id: str, sponsored_limit: int = 20) -> str:
@@ -199,8 +199,7 @@ async def suggest_cosponsor_opportunities(
 
     candidate_bills: list[dict[str, Any]] = []
     for area_name, _ in top_areas:
-        result = await _search_bills_raw({
-            "congress": congress,
+        result = await _search_bills_raw(congress, {
             "query": area_name,
             "limit": 20,
             "offset": 0,
@@ -242,7 +241,7 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
     page_size = 250
 
     # Fetch first page to get total count
-    first_page = await _search_bills_raw({"congress": congress, "limit": page_size, "offset": 0, "sort": "updateDate+desc"})
+    first_page = await _search_bills_raw(congress, {"limit": page_size, "offset": 0, "sort": "updateDate+desc"})
     if "error" in first_page:
         return json.dumps(first_page)
 
@@ -253,7 +252,7 @@ async def analyze_congress_priorities(congress: int = 119) -> str:
     if total_available > page_size:
         offsets = range(page_size, total_available, page_size)
         extra_pages = await asyncio.gather(*[
-            _search_bills_raw({"congress": congress, "limit": page_size, "offset": offset, "sort": "updateDate+desc"})
+            _search_bills_raw(congress, {"limit": page_size, "offset": offset, "sort": "updateDate+desc"})
             for offset in offsets
         ])
         for page in extra_pages:

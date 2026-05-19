@@ -70,8 +70,8 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
     updated_bills: list[dict[str, Any]] = []
     for congress in congresses:
         page_result = await client.get(
-            "bill",
-            {"congress": congress, "fromDateTime": from_dt, "limit": 250, "sort": "updateDate+desc"},
+            f"bill/{congress}",
+            {"fromDateTime": from_dt, "limit": 250, "sort": "updateDate+desc"},
         )
         if "error" in page_result:
             continue
@@ -81,7 +81,7 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
         if total > 250:
             offsets = range(250, min(total, _REFRESH_BATCH), 250)
             extra = await asyncio.gather(*[
-                client.get("bill", {"congress": congress, "fromDateTime": from_dt, "limit": 250, "offset": offset, "sort": "updateDate+desc"})
+                client.get(f"bill/{congress}", {"fromDateTime": from_dt, "limit": 250, "offset": offset, "sort": "updateDate+desc"})
                 for offset in offsets
             ])
             for page in extra:

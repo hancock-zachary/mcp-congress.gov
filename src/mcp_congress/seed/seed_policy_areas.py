@@ -34,7 +34,7 @@ CONCURRENT_PAGES = 5  # pages fetched in parallel at a time
 
 
 async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
-    first = await client.get("bill", {"congress": congress, "limit": PAGE_SIZE, "offset": 0, "sort": "updateDate+desc"})
+    first = await client.get(f"bill/{congress}", {"limit": PAGE_SIZE, "offset": 0, "sort": "updateDate+desc"})
     if "error" in first:
         print(f"  Error fetching bills for congress {congress}: {first}")
         return []
@@ -48,7 +48,7 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
         for i in range(0, len(offsets), CONCURRENT_PAGES):
             chunk = offsets[i:i + CONCURRENT_PAGES]
             pages = await asyncio.gather(*[
-                client.get("bill", {"congress": congress, "limit": PAGE_SIZE, "offset": offset, "sort": "updateDate+desc"})
+                client.get(f"bill/{congress}", {"limit": PAGE_SIZE, "offset": offset, "sort": "updateDate+desc"})
                 for offset in chunk
             ])
             for page in pages:
