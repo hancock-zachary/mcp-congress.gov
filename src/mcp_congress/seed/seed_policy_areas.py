@@ -30,7 +30,8 @@ from mcp_congress.bills import _fetch_bill
 from mcp_congress import cache
 
 PAGE_SIZE = 250
-CONCURRENT_PAGES = 5  # pages fetched in parallel at a time
+CONCURRENT_PAGES = 5   # pages fetched in parallel at a time
+DEFAULT_BATCH = 20     # detail calls fired in parallel at a time
 
 
 async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
@@ -61,22 +62,28 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
 async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: int) -> dict[str, str]:
     mappings: dict[str, str] = {}
     total = len(bills)
+    errors = 0
 
     for i in range(0, total, batch_size):
         chunk = bills[i:i + batch_size]
-        details = await asyncio.gather(*[
+        results = await asyncio.gather(*[
             _fetch_bill(b["congress"], b["type"], b["number"])
             for b in chunk
-        ])
-        for detail in details:
-            bill = detail.get("bill", {})
+        ], return_exceptions=True)
+
+        for result in results:
+            if isinstance(result, Exception):
+                errors += 1
+                continue
+            bill = result.get("bill", {})
             key = f"{bill.get('type', '')}{bill.get('number', '')}"
             area = bill.get("policyArea", {})
             if isinstance(area, dict) and area.get("name") and key:
                 mappings[key] = area["name"]
 
         done = min(i + batch_size, total)
-        print(f"  Enriched {done}/{total} bills ({len(mappings)} mapped so far)")
+        error_note = f", {errors} timeouts skipped" if errors else ""
+        print(f"  Enriched {done}/{total} bills ({len(mappings)} mapped{error_note})")
 
     return mappings
 
@@ -135,9 +142,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--batch",
         type=int,
-        default=100,
+        default=DEFAULT_BATCH,
         metavar="N",
-        help="Number of detail calls to fire concurrently (default: 100)",
+        help=f"Number of detail calls to fire concurrently (default: {DEFAULT_BATCH})",
     )
     args = parser.parse_args()
     asyncio.run(main(args.congresses, args.batch))
