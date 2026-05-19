@@ -25,9 +25,9 @@ def get_client() -> "CongressClient":
 class CongressClient:
     BASE_URL = "https://api.congress.gov/v3"
 
-    def __init__(self, api_key: str) -> None:
+    def __init__(self, api_key: str, timeout: float = 30.0) -> None:
         self._api_key = api_key
-        self._http = httpx.AsyncClient(timeout=30.0)
+        self._http = httpx.AsyncClient(timeout=timeout)
         self._cache: TTLCache = TTLCache(maxsize=512, ttl=300)
         self._lock = asyncio.Lock()
 

@@ -30,6 +30,7 @@ from mcp_congress.bills import _fetch_bill
 from mcp_congress import cache
 
 PAGE_SIZE = 250
+CONCURRENT_PAGES = 5  # pages fetched in parallel at a time
 
 
 async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
@@ -40,16 +41,19 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
 
     total = first.get("pagination", {}).get("count", 0)
     bills = list(first.get("bills", []))
-    print(f"  Congress {congress}: {total} total bills")
+    print(f"  Congress {congress}: {total} total bills — fetching {(total // PAGE_SIZE)} more pages...")
 
     if total > PAGE_SIZE:
-        offsets = range(PAGE_SIZE, total, PAGE_SIZE)
-        pages = await asyncio.gather(*[
-            client.get("bill", {"congress": congress, "limit": PAGE_SIZE, "offset": offset, "sort": "updateDate+desc"})
-            for offset in offsets
-        ])
-        for page in pages:
-            bills.extend(page.get("bills", []))
+        offsets = list(range(PAGE_SIZE, total, PAGE_SIZE))
+        for i in range(0, len(offsets), CONCURRENT_PAGES):
+            chunk = offsets[i:i + CONCURRENT_PAGES]
+            pages = await asyncio.gather(*[
+                client.get("bill", {"congress": congress, "limit": PAGE_SIZE, "offset": offset, "sort": "updateDate+desc"})
+                for offset in chunk
+            ])
+            for page in pages:
+                bills.extend(page.get("bills", []))
+            print(f"  Fetched {min(len(bills), total)}/{total} bills")
 
     return bills
 
@@ -84,7 +88,7 @@ async def main(congresses: list[int], batch_size: int) -> None:
         print("Add it to your .env file or export it before running this script.")
         sys.exit(1)
 
-    client = CongressClient(api_key=api_key)
+    client = CongressClient(api_key=api_key, timeout=60.0)
     data = cache.load()
     existing = data["bills"]
     print(f"Existing cache entries: {len(existing)}")
