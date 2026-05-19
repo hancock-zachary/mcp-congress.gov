@@ -42,19 +42,76 @@ def build_index(data: dict[str, Any]) -> dict[str, str]:
     return {
         f"{r['congress']}{r['bill']}": r["policy_area"]
         for r in data.get("bills", [])
+        if r.get("policy_area")
+    }
+
+
+def build_cosponsor_index(data: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Return a fast lookup dict keyed by bill_key() for sponsor/cosponsor data."""
+    return {
+        f"{r['congress']}{r['bill']}": {
+            "sponsor": r.get("sponsor"),
+            "cosponsors": r.get("cosponsors", []),
+        }
+        for r in data.get("bills", [])
+        if r.get("sponsor") is not None or r.get("cosponsors") is not None
     }
 
 
 def update_many(entries: list[dict[str, Any]]) -> None:
-    """Append new {congress, bill, policy_area} records, skipping duplicates."""
+    """Upsert {congress, bill, policy_area, sponsor, cosponsors} records.
+    New entries are appended; existing entries are merged so sponsor/cosponsor
+    data can be added to records that previously only had policy_area.
+    """
     data = load()
-    existing = {f"{r['congress']}{r['bill']}" for r in data["bills"]}
+    index = {f"{r['congress']}{r['bill']}": i for i, r in enumerate(data["bills"])}
     for entry in entries:
         k = f"{entry['congress']}{entry['bill']}"
-        if k not in existing:
+        if k in index:
+            data["bills"][index[k]].update(entry)
+        else:
             data["bills"].append(entry)
-            existing.add(k)
+            index[k] = len(data["bills"]) - 1
     save(data)
+
+
+def _build_entry(detail: dict[str, Any], cosp_data: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    """Build a cache record from a bill detail response and optional cosponsor response."""
+    b = detail.get("bill", {})
+    congress = b.get("congress", "")
+    t = b.get("type", "").lower()
+    n = b.get("number", "")
+    if not (congress and t and n):
+        return None
+
+    entry: dict[str, Any] = {"congress": congress, "bill": f"{t}{n}"}
+
+    area = b.get("policyArea", {})
+    if isinstance(area, dict) and area.get("name"):
+        entry["policy_area"] = area["name"]
+
+    raw_sponsor = b.get("sponsor", {})
+    if isinstance(raw_sponsor, dict) and raw_sponsor.get("bioguideId"):
+        entry["sponsor"] = {
+            "id": raw_sponsor.get("bioguideId", ""),
+            "name": raw_sponsor.get("fullName", ""),
+            "party": raw_sponsor.get("party", ""),
+            "state": raw_sponsor.get("state", ""),
+        }
+
+    if cosp_data is not None:
+        entry["cosponsors"] = [
+            {
+                "id": c.get("bioguideId", ""),
+                "name": c.get("fullName", ""),
+                "party": c.get("party", ""),
+                "state": c.get("state", ""),
+                "date": c.get("sponsorshipDate", ""),
+            }
+            for c in cosp_data.get("cosponsors", [])
+        ]
+
+    return entry if len(entry) > 2 else None  # must have at least one enrichment field
 
 
 def is_stale() -> bool:
@@ -68,65 +125,87 @@ def is_stale() -> bool:
 
 async def refresh(client: "CongressClient", congresses: list[int]) -> int:
     """
-    Fetch bills updated since last_updated across the given congresses,
+    Fetch bills with recent legislative action across the given congresses,
     enrich with policy areas from detail calls, and persist to cache.
     Returns the number of new records added.
+
+    Filters by latestAction.actionDate >= last_updated date. Pages are fetched
+    in updateDate+desc order and pagination stops early once bills fall below
+    the last_updated threshold — avoiding needless API calls for stale bills.
     """
     data = load()
     existing = build_index(data)
     try:
-        from_dt = datetime.fromisoformat(
-            data["last_updated"].replace("Z", "+00:00")
-        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+        last_dt = datetime.fromisoformat(data["last_updated"].replace("Z", "+00:00"))
+        last_date = last_dt.date()
     except Exception:
-        from_dt = "2025-01-01T00:00:00Z"
+        last_date = datetime(2025, 1, 1, tzinfo=timezone.utc).date()
 
-    # Collect bills updated since last refresh across all requested congresses
-    updated_bills: list[dict[str, Any]] = []
+    # Collect candidates: bills whose latest legislative action is on or after last_date
+    candidates: list[dict[str, Any]] = []
     for congress in congresses:
-        page_result = await client.get(
-            f"bill/{congress}",
-            {"fromDateTime": from_dt, "limit": 250, "sort": "updateDate+desc"},
-        )
-        if "error" in page_result:
-            continue
-        total = page_result.get("pagination", {}).get("count", 0)
-        updated_bills.extend(page_result.get("bills", []))
+        offset = 0
+        while True:
+            page_result = await client.get(
+                f"bill/{congress}",
+                {"limit": 250, "offset": offset, "sort": "updateDate+desc"},
+            )
+            if "error" in page_result:
+                break
 
-        if total > 250:
-            offsets = range(250, min(total, _REFRESH_BATCH), 250)
-            extra = await asyncio.gather(*[
-                client.get(f"bill/{congress}", {"fromDateTime": from_dt, "limit": 250, "offset": offset, "sort": "updateDate+desc"})
-                for offset in offsets
-            ])
-            for page in extra:
-                updated_bills.extend(page.get("bills", []))
+            bills = page_result.get("bills", [])
+            if not bills:
+                break
+
+            stop_after_page = False
+            for bill in bills:
+                # updateDate is a full ISO datetime; when it's older than last_dt we can stop
+                update_date_str = bill.get("updateDate", "")
+                try:
+                    update_dt = datetime.fromisoformat(update_date_str.replace("Z", "+00:00"))
+                    if update_dt < last_dt:
+                        stop_after_page = True
+                        break
+                except Exception:
+                    pass
+
+                action_date_str = bill.get("latestAction", {}).get("actionDate", "")
+                try:
+                    action_date = datetime.strptime(action_date_str, "%Y-%m-%d").date()
+                    if action_date >= last_date:
+                        candidates.append(bill)
+                except Exception:
+                    pass
+
+            if stop_after_page or len(candidates) >= _REFRESH_BATCH:
+                break
+
+            total = page_result.get("pagination", {}).get("count", 0)
+            offset += 250
+            if offset >= total:
+                break
 
     # Only enrich bills not already in cache
     to_enrich = [
-        b for b in updated_bills
+        b for b in candidates
         if bill_key(b.get("congress", ""), b.get("type", ""), b.get("number", "")) not in existing
         and b.get("congress") and b.get("type") and b.get("number")
     ][:_REFRESH_BATCH]
 
     new_entries: list[dict[str, Any]] = []
     if to_enrich:
-        from .bills import _fetch_bill
-        details = await asyncio.gather(*[
-            _fetch_bill(b["congress"], b["type"], b["number"])
+        from .bills import _fetch_bill, _fetch_bill_cosponsors
+        pairs = await asyncio.gather(*[
+            asyncio.gather(
+                _fetch_bill(b["congress"], b["type"], b["number"]),
+                _fetch_bill_cosponsors(b["congress"], b["type"], b["number"]),
+            )
             for b in to_enrich
         ])
-        for detail in details:
-            b = detail.get("bill", {})
-            congress = b.get("congress", "")
-            bill = f"{b.get('type', '').lower()}{b.get('number', '')}"
-            area = b.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name") and congress and bill:
-                new_entries.append({
-                    "congress": congress,
-                    "bill": bill,
-                    "policy_area": area["name"],
-                })
+        for detail, cosp_data in pairs:
+            entry = _build_entry(detail, cosp_data)
+            if entry:
+                new_entries.append(entry)
 
     # Reload so we merge with any changes made since we started
     fresh = load()

@@ -26,9 +26,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from mcp_congress.client import CongressClient
-from mcp_congress.bills import _fetch_bill
+from mcp_congress.bills import _fetch_bill, _fetch_bill_cosponsors
 from mcp_congress import cache
-from mcp_congress.cache import bill_key
+from mcp_congress.cache import bill_key, _build_entry
 
 PAGE_SIZE = 250
 CONCURRENT_PAGES = 5   # pages fetched in parallel at a time
@@ -73,23 +73,30 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
 
     for i in range(0, total, batch_size):
         chunk = bills[i:i + batch_size]
-        results = await asyncio.gather(*[
-            _fetch_bill(b["congress"], b["type"], b["number"])
+        # Fetch bill detail and cosponsors concurrently for each bill in the chunk
+        pair_results = await asyncio.gather(*[
+            asyncio.gather(
+                _fetch_bill(b["congress"], b["type"], b["number"]),
+                _fetch_bill_cosponsors(b["congress"], b["type"], b["number"]),
+                return_exceptions=True,
+            )
             for b in chunk
         ], return_exceptions=True)
 
         batch_timeouts = 0
-        for result in results:
-            if isinstance(result, Exception) or (isinstance(result, dict) and "error" in result):
+        for pair in pair_results:
+            if isinstance(pair, Exception):
                 timeouts += 1
                 batch_timeouts += 1
                 continue
-            b = result.get("bill", {})
-            congress = b.get("congress", "")
-            bill = f"{b.get('type', '').lower()}{b.get('number', '')}"
-            area = b.get("policyArea", {})
-            if isinstance(area, dict) and area.get("name") and congress and bill:
-                entry = {"congress": congress, "bill": bill, "policy_area": area["name"]}
+            detail, cosp_data = pair
+            if isinstance(detail, Exception) or (isinstance(detail, dict) and "error" in detail):
+                timeouts += 1
+                batch_timeouts += 1
+                continue
+            cosp_data = {} if isinstance(cosp_data, Exception) else cosp_data
+            entry = _build_entry(detail, cosp_data)
+            if entry:
                 entries.append(entry)
                 unsaved.append(entry)
             else:
@@ -101,7 +108,7 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
             unsaved.clear()
 
         done = min(i + batch_size, total)
-        parts = [f"{len(entries)} mapped", f"{no_area} no CRS area"]
+        parts = [f"{len(entries)} enriched", f"{no_area} no data"]
         if timeouts:
             parts.append(f"{timeouts} timeouts")
         print(f"  Enriched {done}/{total} bills ({', '.join(parts)})")

@@ -145,13 +145,22 @@ async def analyze_bill_support(congress: int, bill_type: str, bill_number: str) 
     """
     Analyze support for a specific bill.
     Returns the bill details, all current cosponsors, party breakdown, and state distribution.
+    Uses the persistent cosponsor cache when available; falls back to a live API call otherwise.
     """
-    bill_data, cosponsor_data = await asyncio.gather(
-        _fetch_bill(congress, bill_type, bill_number),
-        _fetch_bill_cosponsors(congress, bill_type, bill_number),
-    )
+    k = bill_key(congress, bill_type, bill_number)
+    cosponsor_index = cache.build_cosponsor_index(cache.load())
 
-    cosponsors = cosponsor_data.get("cosponsors", [])
+    if k in cosponsor_index and cosponsor_index[k].get("cosponsors") is not None:
+        bill_data = await _fetch_bill(congress, bill_type, bill_number)
+        cosponsors = cosponsor_index[k]["cosponsors"]
+    else:
+        bill_data, cosponsor_data = await asyncio.gather(
+            _fetch_bill(congress, bill_type, bill_number),
+            _fetch_bill_cosponsors(congress, bill_type, bill_number),
+        )
+        cosponsors = cosponsor_data.get("cosponsors", [])
+
+    # party/state keys are the same whether data came from cache or live API
     party_breakdown: dict[str, int] = {}
     state_breakdown: dict[str, int] = {}
     for cp in cosponsors:
