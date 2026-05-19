@@ -60,10 +60,14 @@ def _normalize(raw: dict) -> tuple[str, dict] | None:
     bid = raw.get("bioguideId", "")
     if not bid:
         return None
+    # district is only present for House members; None for senators
+    district = raw.get("district")
     return bid, {
         "name": raw.get("directOrderName") or raw.get("invertedOrderName") or raw.get("name", ""),
         "party": raw.get("partyName", ""),
         "state": raw.get("state", ""),
+        "district": int(district) if district is not None else None,
+        "active": bool(raw.get("currentMember", False)),
     }
 
 

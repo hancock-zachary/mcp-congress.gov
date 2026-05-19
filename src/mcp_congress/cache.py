@@ -95,9 +95,17 @@ def save_members(data: dict[str, Any]) -> None:
 
 
 def update_members(members: dict[str, Any]) -> None:
-    """Upsert {bioguide_id: {name, party, state}} records and stamp last_updated."""
+    """Upsert {bioguide_id: {name, party, state, district, active}} records.
+    Existing member records are merged field-by-field so that richer data
+    (e.g. district/active from seed_members) is not overwritten by the
+    sparser records collected during bill enrichment.
+    """
     data = load_members()
-    data["members"].update(members)
+    for bid, record in members.items():
+        if bid in data["members"]:
+            data["members"][bid].update(record)
+        else:
+            data["members"][bid] = record
     data["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
     save_members(data)
 

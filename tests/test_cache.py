@@ -78,6 +78,25 @@ def test_update_many_merges_existing_record(monkeypatch):
     assert saved["bills"][0]["sponsor_id"] == "A000001"
 
 
+def test_update_members_merges_fields(monkeypatch):
+    """Richer data (district/active) is not overwritten by sparser bill-enrichment records."""
+    existing = {
+        "last_updated": "2025-01-01T00:00:00Z",
+        "members": {
+            "J000295": {"name": "Rep. Jane Smith", "party": "R", "state": "OH", "district": 7, "active": True}
+        },
+    }
+    monkeypatch.setattr(cache_mod, "load_members", lambda: existing.copy())
+    saved = {}
+    monkeypatch.setattr(cache_mod, "save_members", lambda d: saved.update(d))
+
+    # Sparse update from bill enrichment — no district/active
+    cache_mod.update_members({"J000295": {"name": "Rep. Jane Smith", "party": "R", "state": "OH"}})
+
+    assert saved["members"]["J000295"]["district"] == 7
+    assert saved["members"]["J000295"]["active"] is True
+
+
 def test_build_cosponsor_index(monkeypatch):
     bills = [
         {
