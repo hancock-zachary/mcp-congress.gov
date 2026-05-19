@@ -7,20 +7,20 @@ Teammates who pull the repo get the benefit of these lookups without needing
 to make any API calls themselves.
 
 Usage:
-    uv run python seed/seed_policy_areas.py
-    uv run python seed/seed_policy_areas.py --congresses 118 119
-    uv run python seed/seed_policy_areas.py --congresses 119 --batch 250
+    uv run python src/mcp_congress/seed/seed_policy_areas.py
+    uv run python src/mcp_congress/seed/seed_policy_areas.py --congresses 118 119
+    uv run python src/mcp_congress/seed/seed_policy_areas.py --congresses 119 --batch 250
 """
 
 import argparse
 import asyncio
-import json
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Allow running from any working directory
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -108,7 +108,6 @@ async def main(congresses: list[int], batch_size: int) -> None:
 
     if all_new:
         data["bills"].update(all_new)
-        from datetime import datetime, timezone
         data["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         cache.save(data)
         print(f"\nSaved {len(all_new)} new policy-area mappings to cache.")

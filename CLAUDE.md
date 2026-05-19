@@ -32,8 +32,8 @@ uv run mcp dev src/mcp_congress/server.py        # MCP inspector
 To do a full initial seed (or re-seed after a long gap), run:
 
 ```bash
-uv run python seed/seed_policy_areas.py                        # seed 119th Congress
-uv run python seed/seed_policy_areas.py --congresses 118 119  # seed multiple congresses
+uv run python src/mcp_congress/seed/seed_policy_areas.py                        # seed 119th Congress
+uv run python src/mcp_congress/seed/seed_policy_areas.py --congresses 118 119  # seed multiple congresses
 ```
 
 Commit the updated `policy_areas.json` afterward to share the new mappings with the team.
