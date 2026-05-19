@@ -63,7 +63,8 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
 async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: int) -> list[dict]:
     entries: list[dict] = []
     total = len(bills)
-    errors = 0
+    timeouts = 0
+    no_area = 0
 
     for i in range(0, total, batch_size):
         chunk = bills[i:i + batch_size]
@@ -74,7 +75,10 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
 
         for result in results:
             if isinstance(result, Exception):
-                errors += 1
+                timeouts += 1
+                continue
+            if "error" in result:
+                timeouts += 1
                 continue
             b = result.get("bill", {})
             congress = b.get("congress", "")
@@ -82,10 +86,17 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
             area = b.get("policyArea", {})
             if isinstance(area, dict) and area.get("name") and congress and bill:
                 entries.append({"congress": congress, "bill": bill, "policy_area": area["name"]})
+            else:
+                no_area += 1
 
         done = min(i + batch_size, total)
-        error_note = f", {errors} timeouts skipped" if errors else ""
-        print(f"  Enriched {done}/{total} bills ({len(entries)} mapped{error_note})")
+        parts = [f"{len(entries)} mapped", f"{no_area} no CRS area"]
+        if timeouts:
+            parts.append(f"{timeouts} timeouts")
+        print(f"  Enriched {done}/{total} bills ({', '.join(parts)})")
+
+        # Brief pause between batches to avoid sustained API pressure
+        await asyncio.sleep(0.5)
 
     return entries
 
