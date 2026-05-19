@@ -152,15 +152,24 @@ async def analyze_bill_support(congress: int, bill_type: str, bill_number: str) 
 
     if k in cosponsor_index and cosponsor_index[k].get("cosponsors") is not None:
         bill_data = await _fetch_bill(congress, bill_type, bill_number)
-        cosponsors = cosponsor_index[k]["cosponsors"]
+        members = cache.load_members().get("members", {})
+        cached = cosponsor_index[k]
+        cosponsors = [
+            {
+                "bioguideId": c["id"],
+                "fullName": members.get(c["id"], {}).get("name", ""),
+                "party": members.get(c["id"], {}).get("party", "Unknown"),
+                "state": members.get(c["id"], {}).get("state", "Unknown"),
+                "sponsorshipDate": c.get("date", ""),
+            }
+            for c in cached.get("cosponsors", [])
+        ]
     else:
         bill_data, cosponsor_data = await asyncio.gather(
             _fetch_bill(congress, bill_type, bill_number),
             _fetch_bill_cosponsors(congress, bill_type, bill_number),
         )
         cosponsors = cosponsor_data.get("cosponsors", [])
-
-    # party/state keys are the same whether data came from cache or live API
     party_breakdown: dict[str, int] = {}
     state_breakdown: dict[str, int] = {}
     for cp in cosponsors:

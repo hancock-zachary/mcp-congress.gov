@@ -9,7 +9,9 @@ if TYPE_CHECKING:
     from .client import CongressClient
 
 _CACHE_FILE = files("mcp_congress.data").joinpath("bill_cache.json")
+_MEMBER_CACHE_FILE = files("mcp_congress.data").joinpath("member_cache.json")
 _STALE_AFTER_HOURS = 24
+_MEMBER_STALE_AFTER_HOURS = 168  # 7 days
 _REFRESH_BATCH = 500
 
 
@@ -20,6 +22,8 @@ def bill_key(congress: int | str, bill_type: str, number: str) -> str:
 def _now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
+
+# --- Bill cache ---
 
 def load() -> dict[str, Any]:
     try:
@@ -38,7 +42,7 @@ def save(data: dict[str, Any]) -> None:
 
 
 def build_index(data: dict[str, Any]) -> dict[str, str]:
-    """Return a fast lookup dict keyed by bill_key() from the stored bill list."""
+    """Return {bill_key: policy_area} for O(1) policy-area lookups."""
     return {
         f"{r['congress']}{r['bill']}": r["policy_area"]
         for r in data.get("bills", [])
@@ -47,22 +51,19 @@ def build_index(data: dict[str, Any]) -> dict[str, str]:
 
 
 def build_cosponsor_index(data: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    """Return a fast lookup dict keyed by bill_key() for sponsor/cosponsor data."""
+    """Return {bill_key: {sponsor_id, cosponsors: [{id, date}]}} for O(1) lookups."""
     return {
         f"{r['congress']}{r['bill']}": {
-            "sponsor": r.get("sponsor"),
+            "sponsor_id": r.get("sponsor_id"),
             "cosponsors": r.get("cosponsors", []),
         }
         for r in data.get("bills", [])
-        if r.get("sponsor") is not None or r.get("cosponsors") is not None
+        if r.get("sponsor_id") is not None or r.get("cosponsors") is not None
     }
 
 
 def update_many(entries: list[dict[str, Any]]) -> None:
-    """Upsert {congress, bill, policy_area, sponsor, cosponsors} records.
-    New entries are appended; existing entries are merged so sponsor/cosponsor
-    data can be added to records that previously only had policy_area.
-    """
+    """Upsert bill records. New entries are appended; existing ones are merged."""
     data = load()
     index = {f"{r['congress']}{r['bill']}": i for i, r in enumerate(data["bills"])}
     for entry in entries:
@@ -75,16 +76,62 @@ def update_many(entries: list[dict[str, Any]]) -> None:
     save(data)
 
 
-def _build_entry(detail: dict[str, Any], cosp_data: dict[str, Any] | None = None) -> dict[str, Any] | None:
-    """Build a cache record from a bill detail response and optional cosponsor response."""
+# --- Member cache ---
+
+def load_members() -> dict[str, Any]:
+    try:
+        return json.loads(_MEMBER_CACHE_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"last_updated": "2025-01-01T00:00:00Z", "members": {}}
+
+
+def save_members(data: dict[str, Any]) -> None:
+    try:
+        Path(str(_MEMBER_CACHE_FILE)).write_text(
+            json.dumps(data, indent=2), encoding="utf-8"
+        )
+    except Exception:
+        pass
+
+
+def update_members(members: dict[str, Any]) -> None:
+    """Upsert {bioguide_id: {name, party, state}} records and stamp last_updated."""
+    data = load_members()
+    data["members"].update(members)
+    data["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
+    save_members(data)
+
+
+def is_members_stale() -> bool:
+    data = load_members()
+    try:
+        last = datetime.fromisoformat(data["last_updated"].replace("Z", "+00:00"))
+        return (_now_utc() - last) > timedelta(hours=_MEMBER_STALE_AFTER_HOURS)
+    except Exception:
+        return True
+
+
+# --- Shared builder ---
+
+def _build_entry(
+    detail: dict[str, Any], cosp_data: dict[str, Any] | None = None
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    """
+    Build a normalised bill cache record and a dict of member records to upsert.
+
+    Returns (bill_entry | None, {bioguide_id: {name, party, state}}).
+    Bill entry stores only sponsor_id and cosponsor [{id, date}] — full member
+    details go into the member cache to avoid repetition across bills.
+    """
     b = detail.get("bill", {})
     congress = b.get("congress", "")
     t = b.get("type", "").lower()
     n = b.get("number", "")
     if not (congress and t and n):
-        return None
+        return None, {}
 
     entry: dict[str, Any] = {"congress": congress, "bill": f"{t}{n}"}
+    members: dict[str, Any] = {}
 
     area = b.get("policyArea", {})
     if isinstance(area, dict) and area.get("name"):
@@ -92,27 +139,30 @@ def _build_entry(detail: dict[str, Any], cosp_data: dict[str, Any] | None = None
 
     raw_sponsor = b.get("sponsor", {})
     if isinstance(raw_sponsor, dict) and raw_sponsor.get("bioguideId"):
-        entry["sponsor"] = {
-            "id": raw_sponsor.get("bioguideId", ""),
+        sid = raw_sponsor["bioguideId"]
+        entry["sponsor_id"] = sid
+        members[sid] = {
             "name": raw_sponsor.get("fullName", ""),
             "party": raw_sponsor.get("party", ""),
             "state": raw_sponsor.get("state", ""),
         }
 
     if cosp_data is not None:
-        entry["cosponsors"] = [
-            {
-                "id": c.get("bioguideId", ""),
-                "name": c.get("fullName", ""),
-                "party": c.get("party", ""),
-                "state": c.get("state", ""),
-                "date": c.get("sponsorshipDate", ""),
-            }
-            for c in cosp_data.get("cosponsors", [])
-        ]
+        entry["cosponsors"] = []
+        for c in cosp_data.get("cosponsors", []):
+            cid = c.get("bioguideId", "")
+            if cid:
+                entry["cosponsors"].append({"id": cid, "date": c.get("sponsorshipDate", "")})
+                members[cid] = {
+                    "name": c.get("fullName", ""),
+                    "party": c.get("party", ""),
+                    "state": c.get("state", ""),
+                }
 
-    return entry if len(entry) > 2 else None  # must have at least one enrichment field
+    return (entry if len(entry) > 2 else None), members
 
+
+# --- Staleness / refresh ---
 
 def is_stale() -> bool:
     data = load()
@@ -126,7 +176,7 @@ def is_stale() -> bool:
 async def refresh(client: "CongressClient", congresses: list[int]) -> int:
     """
     Fetch bills with recent legislative action across the given congresses,
-    enrich with policy areas from detail calls, and persist to cache.
+    enrich with policy area, sponsor, and cosponsor data, and persist to cache.
     Returns the number of new records added.
 
     Filters by latestAction.actionDate >= last_updated date. Pages are fetched
@@ -159,7 +209,6 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
 
             stop_after_page = False
             for bill in bills:
-                # updateDate is a full ISO datetime; when it's older than last_dt we can stop
                 update_date_str = bill.get("updateDate", "")
                 try:
                     update_dt = datetime.fromisoformat(update_date_str.replace("Z", "+00:00"))
@@ -193,6 +242,7 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
     ][:_REFRESH_BATCH]
 
     new_entries: list[dict[str, Any]] = []
+    all_members: dict[str, Any] = {}
     if to_enrich:
         from .bills import _fetch_bill, _fetch_bill_cosponsors
         pairs = await asyncio.gather(*[
@@ -203,9 +253,10 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
             for b in to_enrich
         ])
         for detail, cosp_data in pairs:
-            entry = _build_entry(detail, cosp_data)
+            entry, members = _build_entry(detail, cosp_data)
             if entry:
                 new_entries.append(entry)
+                all_members.update(members)
 
     # Reload so we merge with any changes made since we started
     fresh = load()
@@ -217,5 +268,8 @@ async def refresh(client: "CongressClient", congresses: list[int]) -> int:
             existing_keys.add(k)
     fresh["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
     save(fresh)
+
+    if all_members and is_members_stale():
+        update_members(all_members)
 
     return len(new_entries)

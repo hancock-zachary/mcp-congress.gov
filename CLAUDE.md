@@ -27,16 +27,21 @@ uv run mcp dev src/mcp_congress/server.py        # MCP inspector
 
 ## Bill Cache
 
-`src/mcp_congress/data/bill_cache.json` is a bundled cache storing policy area, sponsor, and cosponsor data for each bill. It is committed to the repo so teammates get pre-seeded data on first install. The cache refreshes automatically at runtime when it is more than 24 hours old, fetching only bills whose `latestAction.actionDate` is on or after the last refresh date.
+`src/mcp_congress/data/bill_cache.json` stores policy area, sponsor ID, and cosponsor IDs+dates for each bill. `src/mcp_congress/data/member_cache.json` stores representative details (name, party, state) keyed by BioGuide ID. Both files are committed to the repo so teammates get pre-seeded data on first install. The bill cache refreshes automatically at runtime when it is more than 24 hours old, fetching only bills whose `latestAction.actionDate` is on or after the last refresh date.
 
 To do a full initial seed (or re-seed after a long gap), run:
 
 ```bash
+# Seed bill data (policy area, sponsor, cosponsors)
 uv run python src/mcp_congress/seed/seed_bills.py                        # seed 119th Congress
 uv run python src/mcp_congress/seed/seed_bills.py --congresses 118 119  # seed multiple congresses
+
+# Seed member details (name, party, state)
+uv run python src/mcp_congress/seed/seed_members.py                      # all congresses
+uv run python src/mcp_congress/seed/seed_members.py --congress 119       # specific congress
 ```
 
-Commit the updated `bill_cache.json` afterward to share the new data with the team.
+Commit the updated `bill_cache.json` and `member_cache.json` afterward to share the new data with the team.
 
 ## Environment
 

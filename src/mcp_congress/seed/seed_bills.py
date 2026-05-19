@@ -28,7 +28,7 @@ load_dotenv()
 from mcp_congress.client import CongressClient
 from mcp_congress.bills import _fetch_bill, _fetch_bill_cosponsors
 from mcp_congress import cache
-from mcp_congress.cache import bill_key, _build_entry
+from mcp_congress.cache import bill_key, _build_entry, update_members
 
 PAGE_SIZE = 250
 CONCURRENT_PAGES = 5   # pages fetched in parallel at a time
@@ -65,10 +65,11 @@ async def fetch_all_bills(client: CongressClient, congress: int) -> list[dict]:
 
 async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: int) -> list[dict]:
     entries: list[dict] = []
-    unsaved: list[dict] = []
+    unsaved_bills: list[dict] = []
+    unsaved_members: dict = {}
     total = len(bills)
     timeouts = 0
-    no_area = 0
+    no_data = 0
     pause = BASE_PAUSE
 
     for i in range(0, total, batch_size):
@@ -95,20 +96,23 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
                 batch_timeouts += 1
                 continue
             cosp_data = {} if isinstance(cosp_data, Exception) else cosp_data
-            entry = _build_entry(detail, cosp_data)
+            entry, members = _build_entry(detail, cosp_data)
             if entry:
                 entries.append(entry)
-                unsaved.append(entry)
+                unsaved_bills.append(entry)
+                unsaved_members.update(members)
             else:
-                no_area += 1
+                no_data += 1
 
         # Persist incrementally so a crash or rate-limit wave doesn't lose progress
-        if len(unsaved) >= SAVE_EVERY:
-            cache.update_many(unsaved)
-            unsaved.clear()
+        if len(unsaved_bills) >= SAVE_EVERY:
+            cache.update_many(unsaved_bills)
+            update_members(unsaved_members)
+            unsaved_bills.clear()
+            unsaved_members.clear()
 
         done = min(i + batch_size, total)
-        parts = [f"{len(entries)} enriched", f"{no_area} no data"]
+        parts = [f"{len(entries)} enriched", f"{no_data} no data"]
         if timeouts:
             parts.append(f"{timeouts} timeouts")
         print(f"  Enriched {done}/{total} bills ({', '.join(parts)})")
@@ -123,8 +127,9 @@ async def enrich_batch(bills: list[dict], client: CongressClient, batch_size: in
         await asyncio.sleep(pause)
 
     # Flush any remaining unsaved entries
-    if unsaved:
-        cache.update_many(unsaved)
+    if unsaved_bills:
+        cache.update_many(unsaved_bills)
+        update_members(unsaved_members)
 
     return entries
 

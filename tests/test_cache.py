@@ -24,6 +24,21 @@ def test_is_stale_returns_false_when_fresh(monkeypatch):
     assert cache_mod.is_stale() is False
 
 
+def _make_member_data(days_old: int) -> dict:
+    dt = datetime.now(timezone.utc) - timedelta(days=days_old)
+    return {"last_updated": dt.strftime("%Y-%m-%dT%H:%M:%SZ"), "members": {}}
+
+
+def test_is_members_stale_returns_true_when_old(monkeypatch):
+    monkeypatch.setattr(cache_mod, "load_members", lambda: _make_member_data(days_old=8))
+    assert cache_mod.is_members_stale() is True
+
+
+def test_is_members_stale_returns_false_when_fresh(monkeypatch):
+    monkeypatch.setattr(cache_mod, "load_members", lambda: _make_member_data(days_old=3))
+    assert cache_mod.is_members_stale() is False
+
+
 def test_build_index_returns_lookup_dict(monkeypatch):
     data = _make_data(0, [
         {"congress": 119, "bill": "hr1", "policy_area": "Transportation"},
@@ -55,26 +70,26 @@ def test_update_many_merges_existing_record(monkeypatch):
 
     cache_mod.update_many([{
         "congress": 119, "bill": "hr1", "policy_area": "Taxation",
-        "sponsor": {"id": "A000001", "name": "Rep. Alice", "party": "R", "state": "TX"},
+        "sponsor_id": "A000001",
         "cosponsors": [],
     }])
 
     assert len(saved["bills"]) == 1
-    assert saved["bills"][0]["sponsor"]["id"] == "A000001"
+    assert saved["bills"][0]["sponsor_id"] == "A000001"
 
 
 def test_build_cosponsor_index(monkeypatch):
     bills = [
         {
             "congress": 119, "bill": "hr1", "policy_area": "Transportation",
-            "sponsor": {"id": "A000001", "name": "Rep. Alice", "party": "R", "state": "TX"},
-            "cosponsors": [{"id": "B000002", "name": "Rep. Bob", "party": "D", "state": "CA", "date": "2025-02-01"}],
+            "sponsor_id": "A000001",
+            "cosponsors": [{"id": "B000002", "date": "2025-02-01"}],
         },
         {"congress": 118, "bill": "s2", "policy_area": "Taxation"},  # no sponsor data
     ]
     index = cache_mod.build_cosponsor_index({"bills": bills})
     assert "119hr1" in index
-    assert index["119hr1"]["sponsor"]["id"] == "A000001"
+    assert index["119hr1"]["sponsor_id"] == "A000001"
     assert index["119hr1"]["cosponsors"][0]["id"] == "B000002"
     assert "118s2" not in index
 
@@ -96,8 +111,11 @@ async def test_refresh_fetches_and_persists(monkeypatch):
     cosp_response = {"cosponsors": [{"bioguideId": "B000002", "fullName": "Rep. Bob", "party": "D", "state": "CA", "sponsorshipDate": "2025-02-01"}]}
 
     monkeypatch.setattr(cache_mod, "load", lambda: _make_data(25, []))
+    monkeypatch.setattr(cache_mod, "load_members", lambda: _make_member_data(days_old=8))
     saved = {}
+    saved_members = {}
     monkeypatch.setattr(cache_mod, "save", lambda d: saved.update(d))
+    monkeypatch.setattr(cache_mod, "save_members", lambda d: saved_members.update(d))
 
     mock_client = MagicMock()
     mock_client.get = AsyncMock(return_value=bills_page)
@@ -112,8 +130,11 @@ async def test_refresh_fetches_and_persists(monkeypatch):
         if r["congress"] == 119 and r["bill"] == "hr5"
     )
     assert record["policy_area"] == "Economics and Public Finance"
-    assert record["sponsor"]["id"] == "J000295"
+    assert record["sponsor_id"] == "J000295"
     assert record["cosponsors"][0]["id"] == "B000002"
+    assert record["cosponsors"][0]["date"] == "2025-02-01"
+    assert "J000295" in saved_members.get("members", {})
+    assert "B000002" in saved_members.get("members", {})
 
 
 async def test_refresh_skips_stale_action_dates(monkeypatch):
