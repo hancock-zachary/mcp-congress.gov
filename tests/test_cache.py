@@ -113,6 +113,18 @@ def test_build_cosponsor_index(monkeypatch):
     assert "118s2" not in index
 
 
+def test_update_actions_upserts_and_stamps(monkeypatch):
+    monkeypatch.setattr(cache_mod, "load_actions", lambda: {"last_updated": "2025-01-01T00:00:00Z", "actions": {}})
+    saved = {}
+    monkeypatch.setattr(cache_mod, "save_actions", lambda d: saved.update(d))
+
+    cache_mod.update_actions({"119hr1": [{"date": "2025-01-15", "text": "Introduced.", "type": "IntroReferral"}]})
+
+    assert "119hr1" in saved["actions"]
+    assert saved["actions"]["119hr1"][0]["text"] == "Introduced."
+    assert saved["last_updated"] != "2025-01-01T00:00:00Z"
+
+
 async def test_refresh_fetches_and_persists(monkeypatch):
     recent_date = (datetime.now(timezone.utc) - timedelta(hours=25)).strftime("%Y-%m-%d")
     bills_page = {
@@ -149,7 +161,9 @@ async def test_refresh_fetches_and_persists(monkeypatch):
         if r["congress"] == 119 and r["bill"] == "hr5"
     )
     assert record["policy_area"] == "Economics and Public Finance"
+    assert record["bill_id"] == "119-HR-5"
     assert record["sponsor_id"] == "J000295"
+    assert record["sponsor_date"] == SAMPLE_BILL["introducedDate"]
     assert record["cosponsors"][0]["id"] == "B000002"
     assert record["cosponsors"][0]["date"] == "2025-02-01"
     assert "J000295" in saved_members.get("members", {})

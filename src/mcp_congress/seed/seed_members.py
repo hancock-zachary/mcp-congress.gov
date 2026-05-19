@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from mcp_congress.client import CongressClient
-from mcp_congress.cache import load_members, save_members
+from mcp_congress.cache import load_members, save_members, update_members, _now_utc
 
 PAGE_SIZE = 250
 CONCURRENT_PAGES = 5
@@ -31,21 +31,23 @@ CONCURRENT_PAGES = 5
 
 async def fetch_all_members(client: CongressClient, congress: int | None) -> list[dict]:
     endpoint = f"member/{congress}" if congress else "member"
-    first = await client.get(endpoint, {"limit": PAGE_SIZE, "offset": 0, "sort": "name"})
+    # currentMember=true limits the response to currently serving members only
+    base_params: dict = {"limit": PAGE_SIZE, "offset": 0, "sort": "name", "currentMember": "true"}
+    first = await client.get(endpoint, base_params)
     if "error" in first:
         print(f"  Error fetching members: {first}")
         return []
 
     total = first.get("pagination", {}).get("count", 0)
     members = list(first.get("members", []))
-    print(f"  {total} total members — fetching {max(0, (total - 1) // PAGE_SIZE)} more pages...")
+    print(f"  {total} current members — fetching {max(0, (total - 1) // PAGE_SIZE)} more pages...")
 
     if total > PAGE_SIZE:
         offsets = list(range(PAGE_SIZE, total, PAGE_SIZE))
         for i in range(0, len(offsets), CONCURRENT_PAGES):
             chunk = offsets[i:i + CONCURRENT_PAGES]
             pages = await asyncio.gather(*[
-                client.get(endpoint, {"limit": PAGE_SIZE, "offset": offset, "sort": "name"})
+                client.get(endpoint, {**base_params, "offset": offset})
                 for offset in chunk
             ])
             for page in pages:
@@ -61,22 +63,36 @@ _CHAMBER_MAP = {
 }
 
 
+def _chamber_from(raw: dict) -> str:
+    """Resolve chamber from the most recent term — the list endpoint doesn't
+    expose a top-level chamber field."""
+    # Some endpoints do include a top-level field
+    top = (raw.get("chamber") or "").strip()
+    if top:
+        return _CHAMBER_MAP.get(top.lower(), top)
+
+    terms = raw.get("terms", [])
+    # The API sometimes wraps terms as {"item": [...]}
+    if isinstance(terms, dict):
+        terms = terms.get("item", [])
+    if terms:
+        last = terms[-1] if isinstance(terms, list) else terms
+        raw_name = (last.get("chamber") or "").strip()
+        return _CHAMBER_MAP.get(raw_name.lower(), raw_name)
+    return ""
+
+
 def _normalize(raw: dict) -> tuple[str, dict] | None:
-    """Extract bioguide ID and normalized member record from a raw API member object.
-    Returns None for inactive members (currentMember != True).
-    """
-    if not raw.get("currentMember"):
-        return None
+    """Extract bioguide ID and normalized member record from a raw API member object."""
     bid = raw.get("bioguideId", "")
     if not bid:
         return None
     district = raw.get("district")
-    chamber_raw = (raw.get("chamber") or "").lower()
     return bid, {
         "name": raw.get("directOrderName") or raw.get("invertedOrderName") or raw.get("name", ""),
         "party": raw.get("partyName", ""),
         "state": raw.get("state", ""),
-        "chamber": _CHAMBER_MAP.get(chamber_raw, raw.get("chamber", "")),
+        "chamber": _chamber_from(raw),
         "district": int(district) if district is not None else None,
     }
 
@@ -104,12 +120,15 @@ async def main(congress: int | None) -> None:
             new_records[bid] = record
 
     if new_records:
+        update_members(new_records)  # merges fields and stamps last_updated
         data = load_members()
-        data["members"].update(new_records)
-        save_members(data)
         print(f"\nAdded {len(new_records)} new member records.")
         print(f"Total member cache size: {len(data['members'])} entries.")
     else:
+        # Still stamp last_updated so the weekly staleness clock resets
+        data = load_members()
+        data["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
+        save_members(data)
         print("\nNo new members to add — cache is already up to date.")
 
     await client._http.aclose()

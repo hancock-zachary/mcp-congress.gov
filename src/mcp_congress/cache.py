@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 _CACHE_FILE = files("mcp_congress.data").joinpath("bill_cache.json")
 _MEMBER_CACHE_FILE = files("mcp_congress.data").joinpath("member_cache.json")
+_ACTIONS_CACHE_FILE = files("mcp_congress.data").joinpath("bill_actions_cache.json")
 _STALE_AFTER_HOURS = 24
 _MEMBER_STALE_AFTER_HOURS = 168  # 7 days
 _REFRESH_BATCH = 500
@@ -65,7 +66,11 @@ def build_cosponsor_index(data: dict[str, Any]) -> dict[str, dict[str, Any]]:
 def update_many(entries: list[dict[str, Any]]) -> None:
     """Upsert bill records. New entries are appended; existing ones are merged."""
     data = load()
-    index = {f"{r['congress']}{r['bill']}": i for i, r in enumerate(data["bills"])}
+    index = {
+        f"{r['congress']}{r['bill']}": i
+        for i, r in enumerate(data["bills"])
+        if r.get("congress") and r.get("bill")
+    }
     for entry in entries:
         k = f"{entry['congress']}{entry['bill']}"
         if k in index:
@@ -119,6 +124,32 @@ def is_members_stale() -> bool:
         return True
 
 
+# --- Bill actions cache ---
+
+def load_actions() -> dict[str, Any]:
+    try:
+        return json.loads(_ACTIONS_CACHE_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return {"last_updated": "2025-01-01T00:00:00Z", "actions": {}}
+
+
+def save_actions(data: dict[str, Any]) -> None:
+    try:
+        Path(str(_ACTIONS_CACHE_FILE)).write_text(
+            json.dumps(data, indent=2), encoding="utf-8"
+        )
+    except Exception:
+        pass
+
+
+def update_actions(entries: dict[str, list[dict[str, Any]]]) -> None:
+    """Upsert {bill_key: [actions]} records and stamp last_updated."""
+    data = load_actions()
+    data["actions"].update(entries)
+    data["last_updated"] = _now_utc().strftime("%Y-%m-%dT%H:%M:%SZ")
+    save_actions(data)
+
+
 # --- Shared builder ---
 
 def _build_entry(
@@ -138,17 +169,27 @@ def _build_entry(
     if not (congress and t and n):
         return None, {}
 
-    entry: dict[str, Any] = {"congress": congress, "bill": f"{t}{n}"}
+    bill_str = f"{t}{n}"
+    entry: dict[str, Any] = {
+        "congress": congress,
+        "bill": bill_str,
+        "bill_id": f"{congress}-{t.upper()}-{n}",
+    }
     members: dict[str, Any] = {}
 
     area = b.get("policyArea", {})
     if isinstance(area, dict) and area.get("name"):
         entry["policy_area"] = area["name"]
 
-    raw_sponsor = b.get("sponsor", {})
+    # Real API returns "sponsors" (array); mock uses "sponsor" (singular object)
+    raw_sponsor = b.get("sponsor") or {}
+    if not raw_sponsor:
+        sponsors_list = b.get("sponsors", [])
+        raw_sponsor = sponsors_list[0] if sponsors_list else {}
     if isinstance(raw_sponsor, dict) and raw_sponsor.get("bioguideId"):
         sid = raw_sponsor["bioguideId"]
         entry["sponsor_id"] = sid
+        entry["sponsor_date"] = b.get("introducedDate", "")
         members[sid] = {
             "name": raw_sponsor.get("fullName", ""),
             "party": raw_sponsor.get("party", ""),

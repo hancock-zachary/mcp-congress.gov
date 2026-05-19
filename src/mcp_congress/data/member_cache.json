@@ -1,4 +1,3817 @@
 {
-  "last_updated": "2025-01-01T00:00:00Z",
-  "members": {}
+  "last_updated": "2026-05-19T22:40:49Z",
+  "members": {
+    "V000139": {
+      "name": "Rep. Van Epps, Matt [R-TN-7]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 7
+    },
+    "B001288": {
+      "name": "Sen. Booker, Cory A. [D-NJ]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001150": {
+      "name": "Sen. Schiff, Adam B. [D-CA]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "A000383": {
+      "name": "Sen. Armstrong, Alan [R-OK]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001246": {
+      "name": "Rep. Mejia, Analilia [D-NJ-11]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 11
+    },
+    "F000485": {
+      "name": "Rep. Fuller, Clay [R-GA-14]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 14
+    },
+    "C001091": {
+      "name": "Rep. Castro, Joaquin [D-TX-20]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 20
+    },
+    "M001237": {
+      "name": "Rep. McDonald Rivet, Kristen [D-MI-8]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "House",
+      "district": 8
+    },
+    "C001121": {
+      "name": "Rep. Crow, Jason [D-CO-6]",
+      "party": "D",
+      "state": "CO",
+      "chamber": "House",
+      "district": 6
+    },
+    "K000401": {
+      "name": "Rep. Kiley, Kevin [R-CA-3]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 3
+    },
+    "B001296": {
+      "name": "Rep. Boyle, Brendan F. [D-PA-2]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 2
+    },
+    "Y000064": {
+      "name": "Sen. Young, Todd [R-IN]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000779": {
+      "name": "Sen. Wyden, Ron [D-OR]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000437": {
+      "name": "Sen. Wicker, Roger F. [R-MS]",
+      "party": "R",
+      "state": "MS",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000802": {
+      "name": "Sen. Whitehouse, Sheldon [D-RI]",
+      "party": "D",
+      "state": "RI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000800": {
+      "name": "Sen. Welch, Peter [D-VT]",
+      "party": "D",
+      "state": "VT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000817": {
+      "name": "Sen. Warren, Elizabeth [D-MA]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000790": {
+      "name": "Sen. Warnock, Raphael G. [D-GA]",
+      "party": "D",
+      "state": "GA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "W000805": {
+      "name": "Sen. Warner, Mark R. [D-VA]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "V000128": {
+      "name": "Sen. Van Hollen, Chris [D-MD]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "Senate",
+      "district": null
+    },
+    "T000278": {
+      "name": "Sen. Tuberville, Tommy [R-AL]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "Senate",
+      "district": null
+    },
+    "T000476": {
+      "name": "Sen. Tillis, Thomas [R-NC]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "Senate",
+      "district": null
+    },
+    "T000250": {
+      "name": "Sen. Thune, John [R-SD]",
+      "party": "R",
+      "state": "SD",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001198": {
+      "name": "Sen. Sullivan, Dan [R-AK]",
+      "party": "R",
+      "state": "AK",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001203": {
+      "name": "Sen. Smith, Tina [D-MN]",
+      "party": "D",
+      "state": "MN",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001208": {
+      "name": "Sen. Slotkin, Elissa [D-MI]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001232": {
+      "name": "Sen. Sheehy, Tim [R-MT]",
+      "party": "R",
+      "state": "MT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001181": {
+      "name": "Sen. Shaheen, Jeanne [D-NH]",
+      "party": "D",
+      "state": "NH",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001217": {
+      "name": "Sen. Scott, Rick [R-FL]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001184": {
+      "name": "Sen. Scott, Tim [R-SC]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S000148": {
+      "name": "Sen. Schumer, Charles E. [D-NY]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001227": {
+      "name": "Sen. Schmitt, Eric [R-MO]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S001194": {
+      "name": "Sen. Schatz, Brian [D-HI]",
+      "party": "D",
+      "state": "HI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "S000033": {
+      "name": "Sen. Sanders, Bernard [I-VT]",
+      "party": "I",
+      "state": "VT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "R000605": {
+      "name": "Sen. Rounds, Mike [R-SD]",
+      "party": "R",
+      "state": "SD",
+      "chamber": "Senate",
+      "district": null
+    },
+    "R000608": {
+      "name": "Sen. Rosen, Jacky [D-NV]",
+      "party": "D",
+      "state": "NV",
+      "chamber": "Senate",
+      "district": null
+    },
+    "R000584": {
+      "name": "Sen. Risch, James E. [R-ID]",
+      "party": "R",
+      "state": "ID",
+      "chamber": "Senate",
+      "district": null
+    },
+    "R000618": {
+      "name": "Sen. Ricketts, Pete [R-NE]",
+      "party": "R",
+      "state": "NE",
+      "chamber": "Senate",
+      "district": null
+    },
+    "R000122": {
+      "name": "Sen. Reed, Jack [D-RI]",
+      "party": "D",
+      "state": "RI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "P000595": {
+      "name": "Sen. Peters, Gary C. [D-MI]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "P000603": {
+      "name": "Sen. Paul, Rand [R-KY]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "Senate",
+      "district": null
+    },
+    "P000145": {
+      "name": "Sen. Padilla, Alex [D-CA]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "O000174": {
+      "name": "Sen. Ossoff, Jon [D-GA]",
+      "party": "D",
+      "state": "GA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001111": {
+      "name": "Sen. Murray, Patty [D-WA]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001169": {
+      "name": "Sen. Murphy, Christopher [D-CT]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001153": {
+      "name": "Sen. Murkowski, Lisa [R-AK]",
+      "party": "R",
+      "state": "AK",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001242": {
+      "name": "Sen. Moreno, Bernie [R-OH]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M000934": {
+      "name": "Sen. Moran, Jerry [R-KS]",
+      "party": "R",
+      "state": "KS",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001244": {
+      "name": "Sen. Moody, Ashley [R-FL]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001176": {
+      "name": "Sen. Merkley, Jeff [D-OR]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001243": {
+      "name": "Sen. McCormick, David [R-PA]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M000355": {
+      "name": "Sen. McConnell, Mitch [R-KY]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M001198": {
+      "name": "Sen. Marshall, Roger [R-KS]",
+      "party": "R",
+      "state": "KS",
+      "chamber": "Senate",
+      "district": null
+    },
+    "M000133": {
+      "name": "Sen. Markey, Edward J. [D-MA]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "L000571": {
+      "name": "Sen. Lummis, Cynthia M. [R-WY]",
+      "party": "R",
+      "state": "WY",
+      "chamber": "Senate",
+      "district": null
+    },
+    "L000570": {
+      "name": "Sen. Luj\u00e1n, Ben Ray [D-NM]",
+      "party": "D",
+      "state": "NM",
+      "chamber": "Senate",
+      "district": null
+    },
+    "L000577": {
+      "name": "Sen. Lee, Mike [R-UT]",
+      "party": "R",
+      "state": "UT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "L000575": {
+      "name": "Sen. Lankford, James [R-OK]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "Senate",
+      "district": null
+    },
+    "K000367": {
+      "name": "Sen. Klobuchar, Amy [D-MN]",
+      "party": "D",
+      "state": "MN",
+      "chamber": "Senate",
+      "district": null
+    },
+    "K000383": {
+      "name": "Sen. King, Angus S., Jr. [I-ME]",
+      "party": "I",
+      "state": "ME",
+      "chamber": "Senate",
+      "district": null
+    },
+    "K000394": {
+      "name": "Sen. Kim, Andy [D-NJ]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "Senate",
+      "district": null
+    },
+    "K000393": {
+      "name": "Sen. Kennedy, John [R-LA]",
+      "party": "R",
+      "state": "LA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "K000377": {
+      "name": "Sen. Kelly, Mark [D-AZ]",
+      "party": "D",
+      "state": "AZ",
+      "chamber": "Senate",
+      "district": null
+    },
+    "K000384": {
+      "name": "Sen. Kaine, Tim [D-VA]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "J000312": {
+      "name": "Sen. Justice, James C. [R-WV]",
+      "party": "R",
+      "state": "WV",
+      "chamber": "Senate",
+      "district": null
+    },
+    "J000293": {
+      "name": "Sen. Johnson, Ron [R-WI]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001079": {
+      "name": "Sen. Hyde-Smith, Cindy [R-MS]",
+      "party": "R",
+      "state": "MS",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001104": {
+      "name": "Sen. Husted, Jon [R-OH]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001061": {
+      "name": "Sen. Hoeven, John [R-ND]",
+      "party": "R",
+      "state": "ND",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001042": {
+      "name": "Sen. Hirono, Mazie K. [D-HI]",
+      "party": "D",
+      "state": "HI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H000273": {
+      "name": "Sen. Hickenlooper, John W. [D-CO]",
+      "party": "D",
+      "state": "CO",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001046": {
+      "name": "Sen. Heinrich, Martin [D-NM]",
+      "party": "D",
+      "state": "NM",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001089": {
+      "name": "Sen. Hawley, Josh [R-MO]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H001076": {
+      "name": "Sen. Hassan, Margaret Wood [D-NH]",
+      "party": "D",
+      "state": "NH",
+      "chamber": "Senate",
+      "district": null
+    },
+    "H000601": {
+      "name": "Sen. Hagerty, Bill [R-TN]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "Senate",
+      "district": null
+    },
+    "G000386": {
+      "name": "Sen. Grassley, Chuck [R-IA]",
+      "party": "R",
+      "state": "IA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "G000359": {
+      "name": "Sen. Graham, Lindsey [R-SC]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "Senate",
+      "district": null
+    },
+    "G000555": {
+      "name": "Sen. Gillibrand, Kirsten E. [D-NY]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "Senate",
+      "district": null
+    },
+    "G000574": {
+      "name": "Sen. Gallego, Ruben [D-AZ]",
+      "party": "D",
+      "state": "AZ",
+      "chamber": "Senate",
+      "district": null
+    },
+    "F000463": {
+      "name": "Sen. Fischer, Deb [R-NE]",
+      "party": "R",
+      "state": "NE",
+      "chamber": "Senate",
+      "district": null
+    },
+    "F000479": {
+      "name": "Sen. Fetterman, John [D-PA]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "E000295": {
+      "name": "Sen. Ernst, Joni [R-IA]",
+      "party": "R",
+      "state": "IA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "D000563": {
+      "name": "Sen. Durbin, Richard J. [D-IL]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "Senate",
+      "district": null
+    },
+    "D000622": {
+      "name": "Sen. Duckworth, Tammy [D-IL]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "Senate",
+      "district": null
+    },
+    "D000618": {
+      "name": "Sen. Daines, Steve [R-MT]",
+      "party": "R",
+      "state": "MT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001114": {
+      "name": "Sen. Curtis, John R. [R-UT]",
+      "party": "R",
+      "state": "UT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001098": {
+      "name": "Sen. Cruz, Ted [R-TX]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C000880": {
+      "name": "Sen. Crapo, Mike [R-ID]",
+      "party": "R",
+      "state": "ID",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001096": {
+      "name": "Sen. Cramer, Kevin [R-ND]",
+      "party": "R",
+      "state": "ND",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001095": {
+      "name": "Sen. Cotton, Tom [R-AR]",
+      "party": "R",
+      "state": "AR",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001113": {
+      "name": "Sen. Cortez Masto, Catherine [D-NV]",
+      "party": "D",
+      "state": "NV",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001056": {
+      "name": "Sen. Cornyn, John [R-TX]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001088": {
+      "name": "Sen. Coons, Christopher A. [D-DE]",
+      "party": "D",
+      "state": "DE",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001035": {
+      "name": "Sen. Collins, Susan M. [R-ME]",
+      "party": "R",
+      "state": "ME",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001075": {
+      "name": "Sen. Cassidy, Bill [R-LA]",
+      "party": "R",
+      "state": "LA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C001047": {
+      "name": "Sen. Capito, Shelley Moore [R-WV]",
+      "party": "R",
+      "state": "WV",
+      "chamber": "Senate",
+      "district": null
+    },
+    "C000127": {
+      "name": "Sen. Cantwell, Maria [D-WA]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001305": {
+      "name": "Sen. Budd, Ted [R-NC]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001319": {
+      "name": "Sen. Britt, Katie Boyd [R-AL]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001236": {
+      "name": "Sen. Boozman, John [R-AR]",
+      "party": "R",
+      "state": "AR",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001303": {
+      "name": "Sen. Blunt Rochester, Lisa [D-DE]",
+      "party": "D",
+      "state": "DE",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001277": {
+      "name": "Sen. Blumenthal, Richard [D-CT]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001243": {
+      "name": "Sen. Blackburn, Marsha [R-TN]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001267": {
+      "name": "Sen. Bennet, Michael F. [D-CO]",
+      "party": "D",
+      "state": "CO",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001261": {
+      "name": "Sen. Barrasso, John [R-WY]",
+      "party": "R",
+      "state": "WY",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001299": {
+      "name": "Sen. Banks, Jim [R-IN]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "Senate",
+      "district": null
+    },
+    "B001230": {
+      "name": "Sen. Baldwin, Tammy [D-WI]",
+      "party": "D",
+      "state": "WI",
+      "chamber": "Senate",
+      "district": null
+    },
+    "A000382": {
+      "name": "Sen. Alsobrooks, Angela D. [D-MD]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "Senate",
+      "district": null
+    },
+    "F000476": {
+      "name": "Rep. Frost, Maxwell [D-FL-10]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 10
+    },
+    "M001245": {
+      "name": "Rep. Menefee, Christian D. [D-TX-18]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 18
+    },
+    "C001120": {
+      "name": "Rep. Crenshaw, Dan [R-TX-2]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 2
+    },
+    "L000566": {
+      "name": "Rep. Latta, Robert E. [R-OH-5]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 5
+    },
+    "C001118": {
+      "name": "Rep. Cline, Ben [R-VA-6]",
+      "party": "R",
+      "state": "VA",
+      "chamber": "House",
+      "district": 6
+    },
+    "C001059": {
+      "name": "Rep. Costa, Jim [D-CA-21]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 21
+    },
+    "W000812": {
+      "name": "Rep. Wagner, Ann [R-MO-2]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "House",
+      "district": 2
+    },
+    "R000619": {
+      "name": "Rep. Rulli, Michael A. [R-OH-6]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 6
+    },
+    "D000628": {
+      "name": "Rep. Dunn, Neal P. [R-FL-2]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 2
+    },
+    "N000147": {
+      "name": "Del. Norton, Eleanor Holmes [D-DC-At Large]",
+      "party": "D",
+      "state": "DC",
+      "chamber": "House",
+      "district": null
+    },
+    "D000216": {
+      "name": "Rep. DeLauro, Rosa L. [D-CT-3]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "House",
+      "district": 3
+    },
+    "W000187": {
+      "name": "Rep. Waters, Maxine [D-CA-43]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 43
+    },
+    "P000197": {
+      "name": "Rep. Pelosi, Nancy [D-CA-11]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 11
+    },
+    "G000606": {
+      "name": "Rep. Grijalva, Adelita S. [D-AZ-7]",
+      "party": "D",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 7
+    },
+    "C001087": {
+      "name": "Rep. Crawford, Eric A. \"Rick\" [R-AR-1]",
+      "party": "R",
+      "state": "AR",
+      "chamber": "House",
+      "district": 1
+    },
+    "W000830": {
+      "name": "Rep. Whitesides, George [D-CA-27]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 27
+    },
+    "F000484": {
+      "name": "Rep. Fine, Randy [R-FL-6]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 6
+    },
+    "P000622": {
+      "name": "Rep. Patronis, Jimmy [R-FL-1]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 1
+    },
+    "V000138": {
+      "name": "Rep. Vindman, Eugene Simon [D-VA-7]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "House",
+      "district": 7
+    },
+    "T000490": {
+      "name": "Rep. Taylor, David J. [R-OH-2]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 2
+    },
+    "S001230": {
+      "name": "Rep. Subramanyam, Suhas [D-VA-10]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "House",
+      "district": 10
+    },
+    "S001229": {
+      "name": "Rep. Shreve, Jefferson [R-IN-6]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 6
+    },
+    "S001228": {
+      "name": "Rep. Schmidt, Derek [R-KS-2]",
+      "party": "R",
+      "state": "KS",
+      "chamber": "House",
+      "district": 2
+    },
+    "R000622": {
+      "name": "Rep. Riley, Josh [D-NY-19]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 19
+    },
+    "P000621": {
+      "name": "Rep. Pou, Nellie [D-NJ-9]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 9
+    },
+    "O000176": {
+      "name": "Rep. Olszewski, Johnny [D-MD-2]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 2
+    },
+    "M001240": {
+      "name": "Rep. McDowell, Addison P. [R-NC-6]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 6
+    },
+    "M001239": {
+      "name": "Rep. McGuire, John J. [R-VA-5]",
+      "party": "R",
+      "state": "VA",
+      "chamber": "House",
+      "district": 5
+    },
+    "M001236": {
+      "name": "Rep. Moore, Tim [R-NC-14]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 14
+    },
+    "M001235": {
+      "name": "Rep. Moore, Riley M. [R-WV-2]",
+      "party": "R",
+      "state": "WV",
+      "chamber": "House",
+      "district": 2
+    },
+    "M001233": {
+      "name": "Rep. Messmer, Mark B. [R-IN-8]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 8
+    },
+    "M001232": {
+      "name": "Rep. McClain Delaney, April [D-MD-6]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 6
+    },
+    "M001231": {
+      "name": "Rep. Mannion, John W. [D-NY-22]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 22
+    },
+    "M001230": {
+      "name": "Rep. Mackenzie, Ryan [R-PA-7]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 7
+    },
+    "L000606": {
+      "name": "Rep. Latimer, George [D-NY-16]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 16
+    },
+    "K000405": {
+      "name": "Rep. Knott, Brad [R-NC-13]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 13
+    },
+    "K000403": {
+      "name": "Rep. Kennedy, Mike [R-UT-3]",
+      "party": "R",
+      "state": "UT",
+      "chamber": "House",
+      "district": 3
+    },
+    "J000310": {
+      "name": "Rep. Johnson, Julie [D-TX-32]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 32
+    },
+    "H001103": {
+      "name": "Rescom. Hern\u00e1ndez, Pablo Jose [D-PR-At Large]",
+      "party": "D",
+      "state": "PR",
+      "chamber": "House",
+      "district": null
+    },
+    "H001102": {
+      "name": "Rep. Harris, Mark [R-NC-8]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 8
+    },
+    "H001101": {
+      "name": "Rep. Harrigan, Pat [R-NC-10]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 10
+    },
+    "G000604": {
+      "name": "Rep. Goodlander, Maggie [D-NH-2]",
+      "party": "D",
+      "state": "NH",
+      "chamber": "House",
+      "district": 2
+    },
+    "G000603": {
+      "name": "Rep. Gill, Brandon [R-TX-26]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 26
+    },
+    "G000602": {
+      "name": "Rep. Gillen, Laura [D-NY-4]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 4
+    },
+    "G000601": {
+      "name": "Rep. Goldman, Craig A. [R-TX-12]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 12
+    },
+    "F000483": {
+      "name": "Rep. Friedman, Laura [D-CA-30]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 30
+    },
+    "F000482": {
+      "name": "Rep. Fedorchak, Julie [R-ND-At Large]",
+      "party": "R",
+      "state": "ND",
+      "chamber": "House",
+      "district": null
+    },
+    "E000301": {
+      "name": "Rep. Elfreth, Sarah [D-MD-3]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 3
+    },
+    "D000635": {
+      "name": "Rep. Dexter, Maxine [D-OR-3]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "House",
+      "district": 3
+    },
+    "D000634": {
+      "name": "Rep. Downing, Troy [R-MT-2]",
+      "party": "R",
+      "state": "MT",
+      "chamber": "House",
+      "district": 2
+    },
+    "C001136": {
+      "name": "Rep. Conaway, Herbert C. [D-NJ-3]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 3
+    },
+    "B001327": {
+      "name": "Rep. Bresnahan, Robert P. [R-PA-8]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 8
+    },
+    "B001326": {
+      "name": "Rep. Bynum, Janelle S. [D-OR-5]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "House",
+      "district": 5
+    },
+    "B001325": {
+      "name": "Rep. Biggs, Sheri [R-SC-3]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "House",
+      "district": 3
+    },
+    "B001322": {
+      "name": "Rep. Baumgartner, Michael [R-WA-5]",
+      "party": "R",
+      "state": "WA",
+      "chamber": "House",
+      "district": 5
+    },
+    "B001321": {
+      "name": "Rep. Barrett, Tom [R-MI-7]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 7
+    },
+    "M001218": {
+      "name": "Rep. McCormick, Richard [R-GA-7]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 7
+    },
+    "S001188": {
+      "name": "Rep. Stutzman, Marlin A. [R-IN-3]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 3
+    },
+    "F000110": {
+      "name": "Rep. Fields, Cleo [D-LA-6]",
+      "party": "D",
+      "state": "LA",
+      "chamber": "House",
+      "district": 6
+    },
+    "O000177": {
+      "name": "Rep. Onder, Robert F. [R-MO-3]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "House",
+      "district": 3
+    },
+    "M001238": {
+      "name": "Rep. McBride, Sarah [D-DE-At Large]",
+      "party": "D",
+      "state": "DE",
+      "chamber": "House",
+      "district": null
+    },
+    "M001234": {
+      "name": "Rep. Morrison, Kelly [D-MN-3]",
+      "party": "D",
+      "state": "MN",
+      "chamber": "House",
+      "district": 3
+    },
+    "K000404": {
+      "name": "Del. King-Hinds, Kimberlyn [R-MP-At Large]",
+      "party": "R",
+      "state": "MP",
+      "chamber": "House",
+      "district": null
+    },
+    "J000311": {
+      "name": "Rep. Jack, Brian [R-GA-3]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 3
+    },
+    "H001099": {
+      "name": "Rep. Haridopolos, Mike [R-FL-8]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 8
+    },
+    "F000481": {
+      "name": "Rep. Figures, Shomari [D-AL-2]",
+      "party": "D",
+      "state": "AL",
+      "chamber": "House",
+      "district": 2
+    },
+    "E000300": {
+      "name": "Rep. Evans, Gabe [R-CO-8]",
+      "party": "R",
+      "state": "CO",
+      "chamber": "House",
+      "district": 8
+    },
+    "C001137": {
+      "name": "Rep. Crank, Jeff [R-CO-5]",
+      "party": "R",
+      "state": "CO",
+      "chamber": "House",
+      "district": 5
+    },
+    "B001324": {
+      "name": "Rep. Bell, Wesley [D-MO-1]",
+      "party": "D",
+      "state": "MO",
+      "chamber": "House",
+      "district": 1
+    },
+    "W000829": {
+      "name": "Rep. Wied, Tony [R-WI-8]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "House",
+      "district": 8
+    },
+    "M001229": {
+      "name": "Rep. McIver, LaMonica [D-NJ-10]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 10
+    },
+    "F000480": {
+      "name": "Rep. Fong, Vince [R-CA-20]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 20
+    },
+    "K000402": {
+      "name": "Rep. Kennedy, Timothy M. [D-NY-26]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 26
+    },
+    "M001228": {
+      "name": "Rep. Maloy, Celeste [R-UT-2]",
+      "party": "R",
+      "state": "UT",
+      "chamber": "House",
+      "district": 2
+    },
+    "A000380": {
+      "name": "Rep. Amo, Gabe [D-RI-1]",
+      "party": "D",
+      "state": "RI",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001227": {
+      "name": "Rep. McClellan, Jennifer L. [D-VA-4]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "House",
+      "district": 4
+    },
+    "V000135": {
+      "name": "Rep. Van Orden, Derrick [R-WI-3]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "House",
+      "district": 3
+    },
+    "S001224": {
+      "name": "Rep. Self, Keith [R-TX-3]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 3
+    },
+    "G000600": {
+      "name": "Rep. Perez, Marie Gluesenkamp [D-WA-3]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 3
+    },
+    "O000175": {
+      "name": "Rep. Ogles, Andrew [R-TN-5]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 5
+    },
+    "M001224": {
+      "name": "Rep. Moran, Nathaniel [R-TX-1]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001223": {
+      "name": "Rep. Magaziner, Seth [D-RI-2]",
+      "party": "D",
+      "state": "RI",
+      "chamber": "House",
+      "district": 2
+    },
+    "L000603": {
+      "name": "Rep. Luttrell, Morgan [R-TX-8]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 8
+    },
+    "L000602": {
+      "name": "Rep. Lee, Summer L. [D-PA-12]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 12
+    },
+    "K000399": {
+      "name": "Rep. Kiggans, Jennifer A. [R-VA-2]",
+      "party": "R",
+      "state": "VA",
+      "chamber": "House",
+      "district": 2
+    },
+    "H001095": {
+      "name": "Rep. Hunt, Wesley [R-TX-38]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 38
+    },
+    "H001096": {
+      "name": "Rep. Hageman, Harriet M. [R-WY-At Large]",
+      "party": "R",
+      "state": "WY",
+      "chamber": "House",
+      "district": null
+    },
+    "F000478": {
+      "name": "Rep. Fry, Russell [R-SC-7]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "House",
+      "district": 7
+    },
+    "D000530": {
+      "name": "Rep. Deluzio, Christopher R. [D-PA-17]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 17
+    },
+    "D000594": {
+      "name": "Rep. De La Cruz, Monica [R-TX-15]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 15
+    },
+    "C001130": {
+      "name": "Rep. Crockett, Jasmine [D-TX-30]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 30
+    },
+    "C001131": {
+      "name": "Rep. Casar, Greg [D-TX-35]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 35
+    },
+    "B001318": {
+      "name": "Rep. Balint, Becca [D-VT-At Large]",
+      "party": "D",
+      "state": "VT",
+      "chamber": "House",
+      "district": null
+    },
+    "M001212": {
+      "name": "Rep. Moore, Barry [R-AL-1]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "House",
+      "district": 1
+    },
+    "F000472": {
+      "name": "Rep. Franklin, Scott [R-FL-18]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 18
+    },
+    "B000825": {
+      "name": "Rep. Boebert, Lauren [R-CO-4]",
+      "party": "R",
+      "state": "CO",
+      "chamber": "House",
+      "district": 4
+    },
+    "M001205": {
+      "name": "Rep. Miller, Carol D. [R-WV-1]",
+      "party": "R",
+      "state": "WV",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001208": {
+      "name": "Rep. McBath, Lucy [D-GA-6]",
+      "party": "D",
+      "state": "GA",
+      "chamber": "House",
+      "district": 6
+    },
+    "C001123": {
+      "name": "Rep. Cisneros, Gilbert Ray [D-CA-31]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 31
+    },
+    "S001205": {
+      "name": "Rep. Scanlon, Mary Gay [D-PA-5]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 5
+    },
+    "G000581": {
+      "name": "Rep. Gonzalez, Vicente [D-TX-34]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 34
+    },
+    "S001201": {
+      "name": "Rep. Suozzi, Thomas R. [D-NY-3]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 3
+    },
+    "G000553": {
+      "name": "Rep. Green, Al [D-TX-9]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 9
+    },
+    "D000399": {
+      "name": "Rep. Doggett, Lloyd [D-TX-37]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 37
+    },
+    "V000136": {
+      "name": "Rep. Vasquez, Gabe [D-NM-2]",
+      "party": "D",
+      "state": "NM",
+      "chamber": "House",
+      "district": 2
+    },
+    "T000487": {
+      "name": "Rep. Tokuda, Jill N. [D-HI-2]",
+      "party": "D",
+      "state": "HI",
+      "chamber": "House",
+      "district": 2
+    },
+    "T000488": {
+      "name": "Rep. Thanedar, Shri [D-MI-13]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "House",
+      "district": 13
+    },
+    "S001223": {
+      "name": "Rep. Sykes, Emilia Strong [D-OH-13]",
+      "party": "D",
+      "state": "OH",
+      "chamber": "House",
+      "district": 13
+    },
+    "S001225": {
+      "name": "Rep. Sorensen, Eric [D-IL-17]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 17
+    },
+    "S001221": {
+      "name": "Rep. Scholten, Hillary J. [D-MI-3]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "House",
+      "district": 3
+    },
+    "S001226": {
+      "name": "Rep. Salinas, Andrea [D-OR-6]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "House",
+      "district": 6
+    },
+    "R000617": {
+      "name": "Rep. Ramirez, Delia C. [D-IL-3]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 3
+    },
+    "N000193": {
+      "name": "Rep. Nunn, Zachary [R-IA-3]",
+      "party": "R",
+      "state": "IA",
+      "chamber": "House",
+      "district": 3
+    },
+    "M001219": {
+      "name": "Del. Moylan, James C. [R-GU-At Large]",
+      "party": "R",
+      "state": "GU",
+      "chamber": "House",
+      "district": null
+    },
+    "M001217": {
+      "name": "Rep. Moskowitz, Jared [D-FL-23]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 23
+    },
+    "M001216": {
+      "name": "Rep. Mills, Cory [R-FL-7]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 7
+    },
+    "M001222": {
+      "name": "Rep. Miller, Max L. [R-OH-7]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 7
+    },
+    "M001226": {
+      "name": "Rep. Menendez, Robert [D-NJ-8]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 8
+    },
+    "M001220": {
+      "name": "Rep. McGarvey, Morgan [D-KY-3]",
+      "party": "D",
+      "state": "KY",
+      "chamber": "House",
+      "district": 3
+    },
+    "L000596": {
+      "name": "Rep. Luna, Anna Paulina [R-FL-13]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 13
+    },
+    "L000597": {
+      "name": "Rep. Lee, Laurel M. [R-FL-15]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 15
+    },
+    "L000599": {
+      "name": "Rep. Lawler, Michael [R-NY-17]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 17
+    },
+    "L000600": {
+      "name": "Rep. Langworthy, Nicholas A. [R-NY-23]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 23
+    },
+    "L000601": {
+      "name": "Rep. Landsman, Greg [D-OH-1]",
+      "party": "D",
+      "state": "OH",
+      "chamber": "House",
+      "district": 1
+    },
+    "L000598": {
+      "name": "Rep. LaLota, Nick [R-NY-1]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 1
+    },
+    "K000398": {
+      "name": "Rep. Kean, Thomas H. [R-NJ-7]",
+      "party": "R",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 7
+    },
+    "J000307": {
+      "name": "Rep. James, John [R-MI-10]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 10
+    },
+    "J000309": {
+      "name": "Rep. Jackson, Jonathan L. [D-IL-1]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 1
+    },
+    "I000058": {
+      "name": "Rep. Ivey, Glenn [D-MD-4]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 4
+    },
+    "H001094": {
+      "name": "Rep. Hoyle, Val T. [D-OR-4]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "House",
+      "district": 4
+    },
+    "H001093": {
+      "name": "Rep. Houchin, Erin [R-IN-9]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 9
+    },
+    "G000599": {
+      "name": "Rep. Goldman, Daniel S. [D-NY-10]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 10
+    },
+    "F000477": {
+      "name": "Rep. Foushee, Valerie P. [D-NC-4]",
+      "party": "D",
+      "state": "NC",
+      "chamber": "House",
+      "district": 4
+    },
+    "E000235": {
+      "name": "Rep. Ezell, Mike [R-MS-4]",
+      "party": "R",
+      "state": "MS",
+      "chamber": "House",
+      "district": 4
+    },
+    "E000246": {
+      "name": "Rep. Edwards, Chuck [R-NC-11]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 11
+    },
+    "D000230": {
+      "name": "Rep. Davis, Donald G. [D-NC-1]",
+      "party": "D",
+      "state": "NC",
+      "chamber": "House",
+      "district": 1
+    },
+    "C001129": {
+      "name": "Rep. Collins, Mike [R-GA-10]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 10
+    },
+    "B001316": {
+      "name": "Rep. Burlison, Eric [R-MO-7]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "House",
+      "district": 7
+    },
+    "B001315": {
+      "name": "Rep. Budzinski, Nikki [D-IL-13]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 13
+    },
+    "B001317": {
+      "name": "Rep. Brecheen, Josh [R-OK-2]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "House",
+      "district": 2
+    },
+    "A000379": {
+      "name": "Rep. Alford, Mark [R-MO-4]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "House",
+      "district": 4
+    },
+    "R000579": {
+      "name": "Rep. Ryan, Patrick [D-NY-18]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 18
+    },
+    "M001215": {
+      "name": "Rep. Miller-Meeks, Mariannette [R-IA-1]",
+      "party": "R",
+      "state": "IA",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001136": {
+      "name": "Rep. McClain, Lisa C. [R-MI-9]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 9
+    },
+    "H001091": {
+      "name": "Rep. Hinson, Ashley [R-IA-2]",
+      "party": "R",
+      "state": "IA",
+      "chamber": "House",
+      "district": 2
+    },
+    "G000593": {
+      "name": "Rep. Gimenez, Carlos A. [R-FL-28]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 28
+    },
+    "T000481": {
+      "name": "Rep. Tlaib, Rashida [D-MI-12]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "House",
+      "district": 12
+    },
+    "T000478": {
+      "name": "Rep. Tenney, Claudia [R-NY-24]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 24
+    },
+    "M001199": {
+      "name": "Rep. Mast, Brian J. [R-FL-21]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 21
+    },
+    "R000609": {
+      "name": "Rep. Rutherford, John H. [R-FL-5]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 5
+    },
+    "L000585": {
+      "name": "Rep. LaHood, Darin [R-IL-16]",
+      "party": "R",
+      "state": "IL",
+      "chamber": "House",
+      "district": 16
+    },
+    "Z000018": {
+      "name": "Rep. Zinke, Ryan K. [R-MT-1]",
+      "party": "R",
+      "state": "MT",
+      "chamber": "House",
+      "district": 1
+    },
+    "D000624": {
+      "name": "Rep. Dingell, Debbie [D-MI-6]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "House",
+      "district": 6
+    },
+    "M001194": {
+      "name": "Rep. Moolenaar, John R. [R-MI-2]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 2
+    },
+    "H001067": {
+      "name": "Rep. Hudson, Richard [R-NC-9]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 9
+    },
+    "F000462": {
+      "name": "Rep. Frankel, Lois [D-FL-22]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 22
+    },
+    "H001058": {
+      "name": "Rep. Huizenga, Bill [R-MI-4]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 4
+    },
+    "W000798": {
+      "name": "Rep. Walberg, Tim [R-MI-5]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 5
+    },
+    "N000002": {
+      "name": "Rep. Nadler, Jerrold [D-NY-12]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 12
+    },
+    "W000797": {
+      "name": "Rep. Wasserman Schultz, Debbie [D-FL-25]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 25
+    },
+    "D000600": {
+      "name": "Rep. Diaz-Balart, Mario [R-FL-26]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 26
+    },
+    "S001220": {
+      "name": "Rep. Strong, Dale W. [R-AL-5]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "House",
+      "district": 5
+    },
+    "P000620": {
+      "name": "Rep. Pettersen, Brittany [D-CO-7]",
+      "party": "D",
+      "state": "CO",
+      "chamber": "House",
+      "district": 7
+    },
+    "M001225": {
+      "name": "Rep. Mullin, Kevin [D-CA-15]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 15
+    },
+    "K000400": {
+      "name": "Rep. Kamlager-Dove, Sydney [D-CA-37]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 37
+    },
+    "G000598": {
+      "name": "Rep. Garcia, Robert [D-CA-42]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 42
+    },
+    "C001132": {
+      "name": "Rep. Crane, Elijah [R-AZ-2]",
+      "party": "R",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 2
+    },
+    "C001133": {
+      "name": "Rep. Ciscomani, Juan [R-AZ-6]",
+      "party": "R",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 6
+    },
+    "B001314": {
+      "name": "Rep. Bean, Aaron [R-FL-4]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 4
+    },
+    "Y000067": {
+      "name": "Rep. Yakym, Rudy [R-IN-2]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 2
+    },
+    "F000475": {
+      "name": "Rep. Finstad, Brad [R-MN-1]",
+      "party": "R",
+      "state": "MN",
+      "chamber": "House",
+      "district": 1
+    },
+    "F000474": {
+      "name": "Rep. Flood, Mike [R-NE-1]",
+      "party": "R",
+      "state": "NE",
+      "chamber": "House",
+      "district": 1
+    },
+    "C001126": {
+      "name": "Rep. Carey, Mike [R-OH-15]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 15
+    },
+    "B001313": {
+      "name": "Rep. Brown, Shontel M. [D-OH-11]",
+      "party": "D",
+      "state": "OH",
+      "chamber": "House",
+      "district": 11
+    },
+    "E000071": {
+      "name": "Rep. Ellzey, Jake [R-TX-6]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 6
+    },
+    "S001218": {
+      "name": "Rep. Stansbury, Melanie A. [D-NM-1]",
+      "party": "D",
+      "state": "NM",
+      "chamber": "House",
+      "district": 1
+    },
+    "C001125": {
+      "name": "Rep. Carter, Troy A. [D-LA-2]",
+      "party": "D",
+      "state": "LA",
+      "chamber": "House",
+      "district": 2
+    },
+    "L000595": {
+      "name": "Rep. Letlow, Julia [R-LA-5]",
+      "party": "R",
+      "state": "LA",
+      "chamber": "House",
+      "district": 5
+    },
+    "O000019": {
+      "name": "Rep. Obernolte, Jay [R-CA-23]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 23
+    },
+    "K000397": {
+      "name": "Rep. Kim, Young [R-CA-40]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 40
+    },
+    "V000134": {
+      "name": "Rep. Van Duyne, Beth [R-TX-24]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 24
+    },
+    "S001159": {
+      "name": "Rep. Strickland, Marilyn [D-WA-10]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 10
+    },
+    "O000086": {
+      "name": "Rep. Owens, Burgess [R-UT-4]",
+      "party": "R",
+      "state": "UT",
+      "chamber": "House",
+      "district": 4
+    },
+    "N000026": {
+      "name": "Rep. Nehls, Troy E. [R-TX-22]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 22
+    },
+    "M001213": {
+      "name": "Rep. Moore, Blake D. [R-UT-1]",
+      "party": "R",
+      "state": "UT",
+      "chamber": "House",
+      "district": 1
+    },
+    "J000305": {
+      "name": "Rep. Jacobs, Sara [D-CA-51]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 51
+    },
+    "J000304": {
+      "name": "Rep. Jackson, Ronny [R-TX-13]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 13
+    },
+    "F000471": {
+      "name": "Rep. Fitzgerald, Scott [R-WI-5]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "House",
+      "district": 5
+    },
+    "H001090": {
+      "name": "Rep. Harder, Josh [D-CA-9]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 9
+    },
+    "S001211": {
+      "name": "Rep. Stanton, Greg [D-AZ-4]",
+      "party": "D",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 4
+    },
+    "P000613": {
+      "name": "Rep. Panetta, Jimmy [D-CA-19]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 19
+    },
+    "L000582": {
+      "name": "Rep. Lieu, Ted [D-CA-36]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 36
+    },
+    "A000371": {
+      "name": "Rep. Aguilar, Pete [D-CA-33]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 33
+    },
+    "D000623": {
+      "name": "Rep. DeSaulnier, Mark [D-CA-10]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 10
+    },
+    "P000608": {
+      "name": "Rep. Peters, Scott H. [D-CA-50]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 50
+    },
+    "V000130": {
+      "name": "Rep. Vargas, Juan [D-CA-52]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 52
+    },
+    "T000472": {
+      "name": "Rep. Takano, Mark [D-CA-39]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 39
+    },
+    "R000599": {
+      "name": "Rep. Ruiz, Raul [D-CA-25]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 25
+    },
+    "V000129": {
+      "name": "Rep. Valadao, David G. [R-CA-22]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 22
+    },
+    "B001287": {
+      "name": "Rep. Bera, Ami [D-CA-6]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 6
+    },
+    "G000559": {
+      "name": "Rep. Garamendi, John [D-CA-8]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 8
+    },
+    "C001080": {
+      "name": "Rep. Chu, Judy [D-CA-28]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 28
+    },
+    "S001183": {
+      "name": "Rep. Schweikert, David [R-AZ-1]",
+      "party": "R",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 1
+    },
+    "G000565": {
+      "name": "Rep. Gosar, Paul A. [R-AZ-9]",
+      "party": "R",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 9
+    },
+    "M001177": {
+      "name": "Rep. McClintock, Tom [R-CA-5]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 5
+    },
+    "M001163": {
+      "name": "Rep. Matsui, Doris O. [D-CA-7]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 7
+    },
+    "T000460": {
+      "name": "Rep. Thompson, Mike [D-CA-4]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 4
+    },
+    "S000344": {
+      "name": "Rep. Sherman, Brad [D-CA-32]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 32
+    },
+    "S000250": {
+      "name": "Rep. Sessions, Pete [R-TX-17]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 17
+    },
+    "I000056": {
+      "name": "Rep. Issa, Darrell [R-CA-48]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 48
+    },
+    "C000059": {
+      "name": "Rep. Calvert, Ken [R-CA-41]",
+      "party": "R",
+      "state": "CA",
+      "chamber": "House",
+      "district": 41
+    },
+    "L000397": {
+      "name": "Rep. Lofgren, Zoe [D-CA-18]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 18
+    },
+    "W000788": {
+      "name": "Rep. Williams, Nikema [D-GA-5]",
+      "party": "D",
+      "state": "GA",
+      "chamber": "House",
+      "district": 5
+    },
+    "T000486": {
+      "name": "Rep. Torres, Ritchie [D-NY-15]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 15
+    },
+    "S000929": {
+      "name": "Rep. Spartz, Victoria [R-IN-5]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 5
+    },
+    "S000168": {
+      "name": "Rep. Salazar, Maria Elvira [R-FL-27]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 27
+    },
+    "R000305": {
+      "name": "Rep. Ross, Deborah K. [D-NC-2]",
+      "party": "D",
+      "state": "NC",
+      "chamber": "House",
+      "district": 2
+    },
+    "P000048": {
+      "name": "Rep. Pfluger, August [R-TX-11]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 11
+    },
+    "M001214": {
+      "name": "Rep. Mrvan, Frank J. [D-IN-1]",
+      "party": "D",
+      "state": "IN",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001211": {
+      "name": "Rep. Miller, Mary E. [R-IL-15]",
+      "party": "R",
+      "state": "IL",
+      "chamber": "House",
+      "district": 15
+    },
+    "M000871": {
+      "name": "Rep. Mann, Tracey [R-KS-1]",
+      "party": "R",
+      "state": "KS",
+      "chamber": "House",
+      "district": 1
+    },
+    "M000317": {
+      "name": "Rep. Malliotakis, Nicole [R-NY-11]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 11
+    },
+    "M000194": {
+      "name": "Rep. Mace, Nancy [R-SC-1]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "House",
+      "district": 1
+    },
+    "L000273": {
+      "name": "Rep. Leger Fernandez, Teresa [D-NM-3]",
+      "party": "D",
+      "state": "NM",
+      "chamber": "House",
+      "district": 3
+    },
+    "H001086": {
+      "name": "Rep. Harshbarger, Diana [R-TN-1]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 1
+    },
+    "G000597": {
+      "name": "Rep. Garbarino, Andrew R. [R-NY-2]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 2
+    },
+    "F000470": {
+      "name": "Rep. Fischbach, Michelle [R-MN-7]",
+      "party": "R",
+      "state": "MN",
+      "chamber": "House",
+      "district": 7
+    },
+    "F000446": {
+      "name": "Rep. Feenstra, Randy [R-IA-4]",
+      "party": "R",
+      "state": "IA",
+      "chamber": "House",
+      "district": 4
+    },
+    "F000246": {
+      "name": "Rep. Fallon, Pat [R-TX-4]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 4
+    },
+    "D000032": {
+      "name": "Rep. Donalds, Byron [R-FL-19]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 19
+    },
+    "C001116": {
+      "name": "Rep. Clyde, Andrew S. [R-GA-9]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 9
+    },
+    "C001039": {
+      "name": "Rep. Cammack, Kat [R-FL-3]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 3
+    },
+    "B000740": {
+      "name": "Rep. Bice, Stephanie I. [R-OK-5]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "House",
+      "district": 5
+    },
+    "B000668": {
+      "name": "Rep. Bentz, Cliff [R-OR-2]",
+      "party": "R",
+      "state": "OR",
+      "chamber": "House",
+      "district": 2
+    },
+    "A000148": {
+      "name": "Rep. Auchincloss, Jake [D-MA-4]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 4
+    },
+    "T000165": {
+      "name": "Rep. Tiffany, Thomas P. [R-WI-7]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "House",
+      "district": 7
+    },
+    "M001210": {
+      "name": "Rep. Murphy, Gregory F. [R-NC-3]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 3
+    },
+    "G000592": {
+      "name": "Rep. Golden, Jared F. [D-ME-2]",
+      "party": "D",
+      "state": "ME",
+      "chamber": "House",
+      "district": 2
+    },
+    "S001213": {
+      "name": "Rep. Steil, Bryan [R-WI-1]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "House",
+      "district": 1
+    },
+    "S001216": {
+      "name": "Rep. Schrier, Kim [D-WA-8]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 8
+    },
+    "G000587": {
+      "name": "Rep. Garcia, Sylvia R. [D-TX-29]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 29
+    },
+    "R000614": {
+      "name": "Rep. Roy, Chip [R-TX-21]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 21
+    },
+    "E000299": {
+      "name": "Rep. Escobar, Veronica [D-TX-16]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 16
+    },
+    "F000468": {
+      "name": "Rep. Fletcher, Lizzie [D-TX-7]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 7
+    },
+    "G000589": {
+      "name": "Rep. Gooden, Lance [R-TX-5]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 5
+    },
+    "R000612": {
+      "name": "Rep. Rose, John W. [R-TN-6]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 6
+    },
+    "B001309": {
+      "name": "Rep. Burchett, Tim [R-TN-2]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 2
+    },
+    "J000301": {
+      "name": "Rep. Johnson, Dusty [R-SD-At Large]",
+      "party": "R",
+      "state": "SD",
+      "chamber": "House",
+      "district": null
+    },
+    "T000480": {
+      "name": "Rep. Timmons, William R. [R-SC-4]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "House",
+      "district": 4
+    },
+    "R000610": {
+      "name": "Rep. Reschenthaler, Guy [R-PA-14]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 14
+    },
+    "J000302": {
+      "name": "Rep. Joyce, John [R-PA-13]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 13
+    },
+    "M001204": {
+      "name": "Rep. Meuser, Daniel [R-PA-9]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 9
+    },
+    "H001085": {
+      "name": "Rep. Houlahan, Chrissy [D-PA-6]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 6
+    },
+    "D000631": {
+      "name": "Rep. Dean, Madeleine [D-PA-4]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 4
+    },
+    "V000133": {
+      "name": "Rep. Van Drew, Jefferson [R-NJ-2]",
+      "party": "R",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 2
+    },
+    "C001119": {
+      "name": "Rep. Craig, Angie [D-MN-2]",
+      "party": "D",
+      "state": "MN",
+      "chamber": "House",
+      "district": 2
+    },
+    "G000586": {
+      "name": "Rep. Garc\u00eda, Jes\u00fas G. \"Chuy\" [D-IL-4]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 4
+    },
+    "S001199": {
+      "name": "Rep. Smucker, Lloyd [R-PA-11]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 11
+    },
+    "E000296": {
+      "name": "Rep. Evans, Dwight [D-PA-3]",
+      "party": "D",
+      "state": "PA",
+      "chamber": "House",
+      "district": 3
+    },
+    "P000605": {
+      "name": "Rep. Perry, Scott [R-PA-10]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 10
+    },
+    "K000376": {
+      "name": "Rep. Kelly, Mike [R-PA-16]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 16
+    },
+    "T000467": {
+      "name": "Rep. Thompson, Glenn [R-PA-15]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 15
+    },
+    "M000687": {
+      "name": "Rep. Mfume, Kweisi [D-MD-7]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 7
+    },
+    "W000831": {
+      "name": "Rep. Walkinshaw, James R. [D-VA-11]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "House",
+      "district": 11
+    },
+    "O000172": {
+      "name": "Rep. Ocasio-Cortez, Alexandria [D-NY-14]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 14
+    },
+    "L000590": {
+      "name": "Rep. Lee, Susie [D-NV-3]",
+      "party": "D",
+      "state": "NV",
+      "chamber": "House",
+      "district": 3
+    },
+    "P000614": {
+      "name": "Rep. Pappas, Chris [D-NH-1]",
+      "party": "D",
+      "state": "NH",
+      "chamber": "House",
+      "district": 1
+    },
+    "G000591": {
+      "name": "Rep. Guest, Michael [R-MS-3]",
+      "party": "R",
+      "state": "MS",
+      "chamber": "House",
+      "district": 3
+    },
+    "S001212": {
+      "name": "Rep. Stauber, Pete [R-MN-8]",
+      "party": "R",
+      "state": "MN",
+      "chamber": "House",
+      "district": 8
+    },
+    "O000173": {
+      "name": "Rep. Omar, Ilhan [D-MN-5]",
+      "party": "D",
+      "state": "MN",
+      "chamber": "House",
+      "district": 5
+    },
+    "S001215": {
+      "name": "Rep. Stevens, Haley M. [D-MI-11]",
+      "party": "D",
+      "state": "MI",
+      "chamber": "House",
+      "district": 11
+    },
+    "P000617": {
+      "name": "Rep. Pressley, Ayanna [D-MA-7]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 7
+    },
+    "T000482": {
+      "name": "Rep. Trahan, Lori [D-MA-3]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 3
+    },
+    "D000629": {
+      "name": "Rep. Davids, Sharice [D-KS-3]",
+      "party": "D",
+      "state": "KS",
+      "chamber": "House",
+      "district": 3
+    },
+    "B001307": {
+      "name": "Rep. Baird, James R. [R-IN-4]",
+      "party": "R",
+      "state": "IN",
+      "chamber": "House",
+      "district": 4
+    },
+    "U000040": {
+      "name": "Rep. Underwood, Lauren [D-IL-14]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 14
+    },
+    "C001117": {
+      "name": "Rep. Casten, Sean [D-IL-6]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 6
+    },
+    "F000469": {
+      "name": "Rep. Fulcher, Russ [R-ID-1]",
+      "party": "R",
+      "state": "ID",
+      "chamber": "House",
+      "district": 1
+    },
+    "S001214": {
+      "name": "Rep. Steube, W. Gregory [R-FL-17]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 17
+    },
+    "H001081": {
+      "name": "Rep. Hayes, Jahana [D-CT-5]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "House",
+      "district": 5
+    },
+    "N000191": {
+      "name": "Rep. Neguse, Joe [D-CO-2]",
+      "party": "D",
+      "state": "CO",
+      "chamber": "House",
+      "district": 2
+    },
+    "L000593": {
+      "name": "Rep. Levin, Mike [D-CA-49]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 49
+    },
+    "H001082": {
+      "name": "Rep. Hern, Kevin [R-OK-1]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001206": {
+      "name": "Rep. Morelle, Joseph D. [D-NY-25]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 25
+    },
+    "B001306": {
+      "name": "Rep. Balderson, Troy [R-OH-12]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 12
+    },
+    "C001115": {
+      "name": "Rep. Cloud, Michael [R-TX-27]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 27
+    },
+    "G000585": {
+      "name": "Rep. Gomez, Jimmy [D-CA-34]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 34
+    },
+    "N000190": {
+      "name": "Rep. Norman, Ralph [R-SC-5]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "House",
+      "district": 5
+    },
+    "E000298": {
+      "name": "Rep. Estes, Ron [R-KS-4]",
+      "party": "R",
+      "state": "KS",
+      "chamber": "House",
+      "district": 4
+    },
+    "J000298": {
+      "name": "Rep. Jayapal, Pramila [D-WA-7]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 7
+    },
+    "A000375": {
+      "name": "Rep. Arrington, Jodey C. [R-TX-19]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 19
+    },
+    "K000392": {
+      "name": "Rep. Kustoff, David [R-TN-8]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 8
+    },
+    "F000466": {
+      "name": "Rep. Fitzpatrick, Brian K. [R-PA-1]",
+      "party": "R",
+      "state": "PA",
+      "chamber": "House",
+      "district": 1
+    },
+    "E000297": {
+      "name": "Rep. Espaillat, Adriano [D-NY-13]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 13
+    },
+    "G000583": {
+      "name": "Rep. Gottheimer, Josh [D-NJ-5]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 5
+    },
+    "B001298": {
+      "name": "Rep. Bacon, Don [R-NE-2]",
+      "party": "R",
+      "state": "NE",
+      "chamber": "House",
+      "district": 2
+    },
+    "B001301": {
+      "name": "Rep. Bergman, Jack [R-MI-1]",
+      "party": "R",
+      "state": "MI",
+      "chamber": "House",
+      "district": 1
+    },
+    "R000606": {
+      "name": "Rep. Raskin, Jamie [D-MD-8]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 8
+    },
+    "J000299": {
+      "name": "Rep. Johnson, Mike [R-LA-4]",
+      "party": "R",
+      "state": "LA",
+      "chamber": "House",
+      "district": 4
+    },
+    "H001077": {
+      "name": "Rep. Higgins, Clay [R-LA-3]",
+      "party": "R",
+      "state": "LA",
+      "chamber": "House",
+      "district": 3
+    },
+    "K000391": {
+      "name": "Rep. Krishnamoorthi, Raja [D-IL-8]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 8
+    },
+    "S001200": {
+      "name": "Rep. Soto, Darren [D-FL-9]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 9
+    },
+    "C001110": {
+      "name": "Rep. Correa, J. Luis [D-CA-46]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 46
+    },
+    "B001300": {
+      "name": "Rep. Barrag\u00e1n, Nanette Diaz [D-CA-44]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 44
+    },
+    "C001112": {
+      "name": "Rep. Carbajal, Salud O. [D-CA-24]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 24
+    },
+    "H001066": {
+      "name": "Rep. Horsford, Steven [D-NV-4]",
+      "party": "D",
+      "state": "NV",
+      "chamber": "House",
+      "district": 4
+    },
+    "S001190": {
+      "name": "Rep. Schneider, Bradley Scott [D-IL-10]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 10
+    },
+    "W000806": {
+      "name": "Rep. Webster, Daniel [R-FL-11]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 11
+    },
+    "C001055": {
+      "name": "Rep. Case, Ed [D-HI-1]",
+      "party": "D",
+      "state": "HI",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001241": {
+      "name": "Rep. Min, Dave [D-CA-47]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 47
+    },
+    "H001100": {
+      "name": "Rep. Hurd, Jeff [R-CO-3]",
+      "party": "R",
+      "state": "CO",
+      "chamber": "House",
+      "district": 3
+    },
+    "B001302": {
+      "name": "Rep. Biggs, Andy [R-AZ-5]",
+      "party": "R",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 5
+    },
+    "K000389": {
+      "name": "Rep. Khanna, Ro [D-CA-17]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 17
+    },
+    "C001108": {
+      "name": "Rep. Comer, James [R-KY-1]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "House",
+      "district": 1
+    },
+    "D000626": {
+      "name": "Rep. Davidson, Warren [R-OH-8]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 8
+    },
+    "K000388": {
+      "name": "Rep. Kelly, Trent [R-MS-1]",
+      "party": "R",
+      "state": "MS",
+      "chamber": "House",
+      "district": 1
+    },
+    "G000576": {
+      "name": "Rep. Grothman, Glenn [R-WI-6]",
+      "party": "R",
+      "state": "WI",
+      "chamber": "House",
+      "district": 6
+    },
+    "N000189": {
+      "name": "Rep. Newhouse, Dan [R-WA-4]",
+      "party": "R",
+      "state": "WA",
+      "chamber": "House",
+      "district": 4
+    },
+    "P000610": {
+      "name": "Del. Plaskett, Stacey E. [D-VI-At Large]",
+      "party": "D",
+      "state": "VI",
+      "chamber": "House",
+      "district": null
+    },
+    "B001292": {
+      "name": "Rep. Beyer, Donald S. [D-VA-8]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "House",
+      "district": 8
+    },
+    "B001291": {
+      "name": "Rep. Babin, Brian [R-TX-36]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 36
+    },
+    "S001196": {
+      "name": "Rep. Stefanik, Elise M. [R-NY-21]",
+      "party": "R",
+      "state": "NY",
+      "chamber": "House",
+      "district": 21
+    },
+    "W000822": {
+      "name": "Rep. Watson Coleman, Bonnie [D-NJ-12]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 12
+    },
+    "R000603": {
+      "name": "Rep. Rouzer, David [R-NC-7]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 7
+    },
+    "E000294": {
+      "name": "Rep. Emmer, Tom [R-MN-6]",
+      "party": "R",
+      "state": "MN",
+      "chamber": "House",
+      "district": 6
+    },
+    "M001196": {
+      "name": "Rep. Moulton, Seth [D-MA-6]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 6
+    },
+    "B001295": {
+      "name": "Rep. Bost, Mike [R-IL-12]",
+      "party": "R",
+      "state": "IL",
+      "chamber": "House",
+      "district": 12
+    },
+    "A000372": {
+      "name": "Rep. Allen, Rick W. [R-GA-12]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 12
+    },
+    "L000583": {
+      "name": "Rep. Loudermilk, Barry [R-GA-11]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 11
+    },
+    "C001103": {
+      "name": "Rep. Carter, Earl L. \"Buddy\" [R-GA-1]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 1
+    },
+    "T000474": {
+      "name": "Rep. Torres, Norma J. [D-CA-35]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 35
+    },
+    "W000821": {
+      "name": "Rep. Westerman, Bruce [R-AR-4]",
+      "party": "R",
+      "state": "AR",
+      "chamber": "House",
+      "district": 4
+    },
+    "H001072": {
+      "name": "Rep. Hill, J. French [R-AR-2]",
+      "party": "R",
+      "state": "AR",
+      "chamber": "House",
+      "district": 2
+    },
+    "R000600": {
+      "name": "Del. Radewagen, Aumua Amata Coleman [R-AS-At Large]",
+      "party": "R",
+      "state": "AS",
+      "chamber": "House",
+      "district": null
+    },
+    "P000609": {
+      "name": "Rep. Palmer, Gary J. [R-AL-6]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "House",
+      "district": 6
+    },
+    "N000188": {
+      "name": "Rep. Norcross, Donald [D-NJ-1]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 1
+    },
+    "A000370": {
+      "name": "Rep. Adams, Alma S. [D-NC-12]",
+      "party": "D",
+      "state": "NC",
+      "chamber": "House",
+      "district": 12
+    },
+    "C001101": {
+      "name": "Rep. Clark, Katherine M. [D-MA-5]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 5
+    },
+    "S001195": {
+      "name": "Rep. Smith, Jason [R-MO-8]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "House",
+      "district": 8
+    },
+    "B001282": {
+      "name": "Rep. Barr, Andy [R-KY-6]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "House",
+      "district": 6
+    },
+    "C001067": {
+      "name": "Rep. Clarke, Yvette D. [D-NY-9]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 9
+    },
+    "T000469": {
+      "name": "Rep. Tonko, Paul [D-NY-20]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 20
+    },
+    "K000385": {
+      "name": "Rep. Kelly, Robin L. [D-IL-2]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 2
+    },
+    "M001137": {
+      "name": "Rep. Meeks, Gregory W. [D-NY-5]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 5
+    },
+    "V000081": {
+      "name": "Rep. Vel\u00e1zquez, Nydia M. [D-NY-7]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 7
+    },
+    "T000463": {
+      "name": "Rep. Turner, Michael R. [R-OH-10]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 10
+    },
+    "T000491": {
+      "name": "Rep. Tran, Derek [D-CA-45]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 45
+    },
+    "P000607": {
+      "name": "Rep. Pocan, Mark [D-WI-2]",
+      "party": "D",
+      "state": "WI",
+      "chamber": "House",
+      "district": 2
+    },
+    "V000131": {
+      "name": "Rep. Veasey, Marc A. [D-TX-33]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 33
+    },
+    "W000816": {
+      "name": "Rep. Williams, Roger [R-TX-25]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 25
+    },
+    "W000814": {
+      "name": "Rep. Weber, Randy K. Sr. [R-TX-14]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 14
+    },
+    "J000295": {
+      "name": "Rep. Joyce, David P. [R-OH-14]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 14
+    },
+    "B001281": {
+      "name": "Rep. Beatty, Joyce [D-OH-3]",
+      "party": "D",
+      "state": "OH",
+      "chamber": "House",
+      "district": 3
+    },
+    "J000294": {
+      "name": "Rep. Jeffries, Hakeem S. [D-NY-8]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 8
+    },
+    "M001188": {
+      "name": "Rep. Meng, Grace [D-NY-6]",
+      "party": "D",
+      "state": "NY",
+      "chamber": "House",
+      "district": 6
+    },
+    "B001285": {
+      "name": "Rep. Brownley, Julia [D-CA-26]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 26
+    },
+    "H001068": {
+      "name": "Rep. Huffman, Jared [D-CA-2]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 2
+    },
+    "D000617": {
+      "name": "Rep. DelBene, Suzan K. [D-WA-1]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001184": {
+      "name": "Rep. Massie, Thomas [R-KY-4]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "House",
+      "district": 4
+    },
+    "B001278": {
+      "name": "Rep. Bonamici, Suzanne [D-OR-1]",
+      "party": "D",
+      "state": "OR",
+      "chamber": "House",
+      "district": 1
+    },
+    "A000369": {
+      "name": "Rep. Amodei, Mark E. [R-NV-2]",
+      "party": "R",
+      "state": "NV",
+      "chamber": "House",
+      "district": 2
+    },
+    "W000804": {
+      "name": "Rep. Wittman, Robert J. [R-VA-1]",
+      "party": "R",
+      "state": "VA",
+      "chamber": "House",
+      "district": 1
+    },
+    "G000568": {
+      "name": "Rep. Griffith, H. Morgan [R-VA-9]",
+      "party": "R",
+      "state": "VA",
+      "chamber": "House",
+      "district": 9
+    },
+    "D000616": {
+      "name": "Rep. DesJarlais, Scott [R-TN-4]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 4
+    },
+    "F000459": {
+      "name": "Rep. Fleischmann, Charles J. \"Chuck\" [R-TN-3]",
+      "party": "R",
+      "state": "TN",
+      "chamber": "House",
+      "district": 3
+    },
+    "H001052": {
+      "name": "Rep. Harris, Andy [R-MD-1]",
+      "party": "R",
+      "state": "MD",
+      "chamber": "House",
+      "district": 1
+    },
+    "K000375": {
+      "name": "Rep. Keating, William R. [D-MA-9]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 9
+    },
+    "S001189": {
+      "name": "Rep. Scott, Austin [R-GA-8]",
+      "party": "R",
+      "state": "GA",
+      "chamber": "House",
+      "district": 8
+    },
+    "W000808": {
+      "name": "Rep. Wilson, Frederica S. [D-FL-24]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 24
+    },
+    "W000809": {
+      "name": "Rep. Womack, Steve [R-AR-3]",
+      "party": "R",
+      "state": "AR",
+      "chamber": "House",
+      "district": 3
+    },
+    "S001185": {
+      "name": "Rep. Sewell, Terri A. [D-AL-7]",
+      "party": "D",
+      "state": "AL",
+      "chamber": "House",
+      "district": 7
+    },
+    "C001068": {
+      "name": "Rep. Cohen, Steve [D-TN-9]",
+      "party": "D",
+      "state": "TN",
+      "chamber": "House",
+      "district": 9
+    },
+    "J000289": {
+      "name": "Rep. Jordan, Jim [R-OH-4]",
+      "party": "R",
+      "state": "OH",
+      "chamber": "House",
+      "district": 4
+    },
+    "B001260": {
+      "name": "Rep. Buchanan, Vern [R-FL-16]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 16
+    },
+    "C001066": {
+      "name": "Rep. Castor, Kathy [D-FL-14]",
+      "party": "D",
+      "state": "FL",
+      "chamber": "House",
+      "district": 14
+    },
+    "B001257": {
+      "name": "Rep. Bilirakis, Gus M. [R-FL-12]",
+      "party": "R",
+      "state": "FL",
+      "chamber": "House",
+      "district": 12
+    },
+    "Q000023": {
+      "name": "Rep. Quigley, Mike [D-IL-5]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 5
+    },
+    "T000468": {
+      "name": "Rep. Titus, Dina [D-NV-1]",
+      "party": "D",
+      "state": "NV",
+      "chamber": "House",
+      "district": 1
+    },
+    "P000597": {
+      "name": "Rep. Pingree, Chellie [D-ME-1]",
+      "party": "D",
+      "state": "ME",
+      "chamber": "House",
+      "district": 1
+    },
+    "G000558": {
+      "name": "Rep. Guthrie, Brett [R-KY-2]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "House",
+      "district": 2
+    },
+    "H001047": {
+      "name": "Rep. Himes, James A. [D-CT-4]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "House",
+      "district": 4
+    },
+    "S001176": {
+      "name": "Rep. Scalise, Steve [R-LA-1]",
+      "party": "R",
+      "state": "LA",
+      "chamber": "House",
+      "district": 1
+    },
+    "F000454": {
+      "name": "Rep. Foster, Bill [D-IL-11]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 11
+    },
+    "C001072": {
+      "name": "Rep. Carson, Andr\u00e9 [D-IN-7]",
+      "party": "D",
+      "state": "IN",
+      "chamber": "House",
+      "district": 7
+    },
+    "M000312": {
+      "name": "Rep. McGovern, James P. [D-MA-2]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 2
+    },
+    "N000015": {
+      "name": "Rep. Neal, Richard E. [D-MA-1]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 1
+    },
+    "M001160": {
+      "name": "Rep. Moore, Gwen [D-WI-4]",
+      "party": "D",
+      "state": "WI",
+      "chamber": "House",
+      "district": 4
+    },
+    "S001156": {
+      "name": "Rep. S\u00e1nchez, Linda T. [D-CA-38]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 38
+    },
+    "L000562": {
+      "name": "Rep. Lynch, Stephen F. [D-MA-8]",
+      "party": "D",
+      "state": "MA",
+      "chamber": "House",
+      "district": 8
+    },
+    "S001231": {
+      "name": "Rep. Simon, Lateefah [D-CA-12]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 12
+    },
+    "R000621": {
+      "name": "Rep. Randall, Emily [D-WA-6]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 6
+    },
+    "R000620": {
+      "name": "Rep. Rivas, Luz M. [D-CA-29]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 29
+    },
+    "L000607": {
+      "name": "Rep. Liccardo, Sam T. [D-CA-16]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 16
+    },
+    "H001098": {
+      "name": "Rep. Hamadeh, Abraham J. [R-AZ-8]",
+      "party": "R",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 8
+    },
+    "G000605": {
+      "name": "Rep. Gray, Adam [D-CA-13]",
+      "party": "D",
+      "state": "CA",
+      "chamber": "House",
+      "district": 13
+    },
+    "B001323": {
+      "name": "Rep. Begich, Nicholas J. [R-AK-At Large]",
+      "party": "R",
+      "state": "AK",
+      "chamber": "House",
+      "district": null
+    },
+    "A000381": {
+      "name": "Rep. Ansari, Yassamin [D-AZ-3]",
+      "party": "D",
+      "state": "AZ",
+      "chamber": "House",
+      "district": 3
+    },
+    "S001172": {
+      "name": "Rep. Smith, Adrian [R-NE-3]",
+      "party": "R",
+      "state": "NE",
+      "chamber": "House",
+      "district": 3
+    },
+    "J000288": {
+      "name": "Rep. Johnson, Henry C. \"Hank\" [D-GA-4]",
+      "party": "D",
+      "state": "GA",
+      "chamber": "House",
+      "district": 4
+    },
+    "C001069": {
+      "name": "Rep. Courtney, Joe [D-CT-2]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "House",
+      "district": 2
+    },
+    "P000034": {
+      "name": "Rep. Pallone, Frank [D-NJ-6]",
+      "party": "D",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 6
+    },
+    "S001148": {
+      "name": "Rep. Simpson, Michael K. [R-ID-2]",
+      "party": "R",
+      "state": "ID",
+      "chamber": "House",
+      "district": 2
+    },
+    "S001145": {
+      "name": "Rep. Schakowsky, Janice D. [D-IL-9]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 9
+    },
+    "L000557": {
+      "name": "Rep. Larson, John B. [D-CT-1]",
+      "party": "D",
+      "state": "CT",
+      "chamber": "House",
+      "district": 1
+    },
+    "S000510": {
+      "name": "Rep. Smith, Adam [D-WA-9]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 9
+    },
+    "D000197": {
+      "name": "Rep. DeGette, Diana [D-CO-1]",
+      "party": "D",
+      "state": "CO",
+      "chamber": "House",
+      "district": 1
+    },
+    "D000096": {
+      "name": "Rep. Davis, Danny K. [D-IL-7]",
+      "party": "D",
+      "state": "IL",
+      "chamber": "House",
+      "district": 7
+    },
+    "A000055": {
+      "name": "Rep. Aderholt, Robert B. [R-AL-4]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "House",
+      "district": 4
+    },
+    "T000193": {
+      "name": "Rep. Thompson, Bennie G. [D-MS-2]",
+      "party": "D",
+      "state": "MS",
+      "chamber": "House",
+      "district": 2
+    },
+    "S000522": {
+      "name": "Rep. Smith, Christopher H. [R-NJ-4]",
+      "party": "R",
+      "state": "NJ",
+      "chamber": "House",
+      "district": 4
+    },
+    "S000185": {
+      "name": "Rep. Scott, Robert C. \"Bobby\" [D-VA-3]",
+      "party": "D",
+      "state": "VA",
+      "chamber": "House",
+      "district": 3
+    },
+    "R000395": {
+      "name": "Rep. Rogers, Harold [R-KY-5]",
+      "party": "R",
+      "state": "KY",
+      "chamber": "House",
+      "district": 5
+    },
+    "B000490": {
+      "name": "Rep. Bishop, Sanford D. [D-GA-2]",
+      "party": "D",
+      "state": "GA",
+      "chamber": "House",
+      "district": 2
+    },
+    "L000491": {
+      "name": "Rep. Lucas, Frank D. [R-OK-3]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "House",
+      "district": 3
+    },
+    "C001063": {
+      "name": "Rep. Cuellar, Henry [D-TX-28]",
+      "party": "D",
+      "state": "TX",
+      "chamber": "House",
+      "district": 28
+    },
+    "M001157": {
+      "name": "Rep. McCaul, Michael T. [R-TX-10]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 10
+    },
+    "F000450": {
+      "name": "Rep. Foxx, Virginia [R-NC-5]",
+      "party": "R",
+      "state": "NC",
+      "chamber": "House",
+      "district": 5
+    },
+    "C001061": {
+      "name": "Rep. Cleaver, Emanuel [D-MO-5]",
+      "party": "D",
+      "state": "MO",
+      "chamber": "House",
+      "district": 5
+    },
+    "C001051": {
+      "name": "Rep. Carter, John R. [R-TX-31]",
+      "party": "R",
+      "state": "TX",
+      "chamber": "House",
+      "district": 31
+    },
+    "C001053": {
+      "name": "Rep. Cole, Tom [R-OK-4]",
+      "party": "R",
+      "state": "OK",
+      "chamber": "House",
+      "district": 4
+    },
+    "R000575": {
+      "name": "Rep. Rogers, Mike D. [R-AL-3]",
+      "party": "R",
+      "state": "AL",
+      "chamber": "House",
+      "district": 3
+    },
+    "W000795": {
+      "name": "Rep. Wilson, Joe [R-SC-2]",
+      "party": "R",
+      "state": "SC",
+      "chamber": "House",
+      "district": 2
+    },
+    "L000560": {
+      "name": "Rep. Larsen, Rick [D-WA-2]",
+      "party": "D",
+      "state": "WA",
+      "chamber": "House",
+      "district": 2
+    },
+    "G000546": {
+      "name": "Rep. Graves, Sam [R-MO-6]",
+      "party": "R",
+      "state": "MO",
+      "chamber": "House",
+      "district": 6
+    },
+    "M001143": {
+      "name": "Rep. McCollum, Betty [D-MN-4]",
+      "party": "D",
+      "state": "MN",
+      "chamber": "House",
+      "district": 4
+    },
+    "C000537": {
+      "name": "Rep. Clyburn, James E. [D-SC-6]",
+      "party": "D",
+      "state": "SC",
+      "chamber": "House",
+      "district": 6
+    },
+    "K000009": {
+      "name": "Rep. Kaptur, Marcy [D-OH-9]",
+      "party": "D",
+      "state": "OH",
+      "chamber": "House",
+      "district": 9
+    },
+    "H000874": {
+      "name": "Rep. Hoyer, Steny H. [D-MD-5]",
+      "party": "D",
+      "state": "MD",
+      "chamber": "House",
+      "district": 5
+    },
+    "S001193": {
+      "name": "Rep. Swalwell, Eric [D-CA-14]",
+      "party": "D",
+      "state": "CA"
+    },
+    "L000578": {
+      "name": "Rep. LaMalfa, Doug [R-CA-1]",
+      "party": "R",
+      "state": "CA"
+    },
+    "G000590": {
+      "name": "Rep. Green, Mark E. [R-TN-7]",
+      "party": "R",
+      "state": "TN"
+    },
+    "G000596": {
+      "name": "Rep. Greene, Marjorie Taylor [R-GA-14]",
+      "party": "R",
+      "state": "GA"
+    },
+    "S001207": {
+      "name": "Rep. Sherrill, Mikie [D-NJ-11]",
+      "party": "D",
+      "state": "NJ"
+    },
+    "C001127": {
+      "name": "Rep. Cherfilus-McCormick, Sheila [D-FL-20]",
+      "party": "D",
+      "state": "FL"
+    },
+    "G000551": {
+      "name": "Rep. Grijalva, Ra\u00fal M. [D-AZ-7]",
+      "party": "D",
+      "state": "AZ"
+    },
+    "C001078": {
+      "name": "Rep. Connolly, Gerald E. [D-VA-11]",
+      "party": "D",
+      "state": "VA"
+    },
+    "G000594": {
+      "name": "Rep. Gonzales, Tony [R-TX-23]",
+      "party": "R",
+      "state": "TX"
+    },
+    "S001157": {
+      "name": "Rep. Scott, David [D-GA-13]",
+      "party": "D",
+      "state": "GA"
+    },
+    "M001190": {
+      "name": "Sen. Mullin, Markwayne [R-OK]",
+      "party": "R",
+      "state": "OK"
+    },
+    "T000489": {
+      "name": "Rep. Turner, Sylvester [D-TX-18]",
+      "party": "D",
+      "state": "TX"
+    }
+  }
 }

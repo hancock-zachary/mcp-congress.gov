@@ -32,16 +32,20 @@ uv run mcp dev src/mcp_congress/server.py        # MCP inspector
 To do a full initial seed (or re-seed after a long gap), run:
 
 ```bash
-# Seed bill data (policy area, sponsor, cosponsors)
+# Seed bill data (policy area, sponsor id/date, cosponsors, bill_id)
 uv run python src/mcp_congress/seed/seed_bills.py                        # seed 119th Congress
 uv run python src/mcp_congress/seed/seed_bills.py --congresses 118 119  # seed multiple congresses
 
-# Seed member details (name, party, state)
+# Seed member details (name, party, state, chamber, district)
 uv run python src/mcp_congress/seed/seed_members.py                      # all congresses
 uv run python src/mcp_congress/seed/seed_members.py --congress 119       # specific congress
+
+# Seed bill action history (run after seed_bills.py)
+uv run python src/mcp_congress/seed/seed_bill_actions.py
+uv run python src/mcp_congress/seed/seed_bill_actions.py --batch 20
 ```
 
-Commit the updated `bill_cache.json` and `member_cache.json` afterward to share the new data with the team.
+Commit the updated `bill_cache.json`, `member_cache.json`, and `bill_actions_cache.json` afterward to share the new data with the team.
 
 ## Environment
 
