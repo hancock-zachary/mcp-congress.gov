@@ -25,6 +25,19 @@ uv run pytest tests/integration/ -v              # integration tests (needs CONG
 uv run mcp dev src/mcp_congress/server.py        # MCP inspector
 ```
 
+## Policy-Area Cache
+
+`src/mcp_congress/data/policy_areas.json` is a bundled cache mapping bill keys to CRS policy areas. It is committed to the repo so teammates get pre-seeded data on first install. The cache refreshes automatically at runtime when it is more than 24 hours old.
+
+To do a full initial seed (or re-seed after a long gap), run:
+
+```bash
+uv run python seed/seed_policy_areas.py                        # seed 119th Congress
+uv run python seed/seed_policy_areas.py --congresses 118 119  # seed multiple congresses
+```
+
+Commit the updated `policy_areas.json` afterward to share the new mappings with the team.
+
 ## Environment
 
 - `CONGRESS_API_KEY` — required. Get a free key at https://api.congress.gov/sign-up/
