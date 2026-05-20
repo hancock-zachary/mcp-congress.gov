@@ -91,8 +91,8 @@ async def seed_actions(client: CongressClient, batch_size: int) -> None:
                 timeouts += 1
                 batch_timeouts += 1
                 continue
-            raw = result.get("actions", {})
-            items = raw.get("items", []) if isinstance(raw, dict) else []
+            raw = result.get("actions", [])
+            items = raw if isinstance(raw, list) else raw.get("items", [])
             unsaved[k] = _normalize_actions(items)
             fetched += 1
 
